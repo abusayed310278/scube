@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../../../core/constants/assets.dart';
+
 class NoDataScreen extends StatelessWidget {
   const NoDataScreen({super.key});
 
@@ -32,10 +34,12 @@ class NoDataScreen extends StatelessWidget {
             child: Stack(
               alignment: Alignment.topRight,
               children: [
-                IconButton(
-                  onPressed: () {},
-                  icon: const Icon(Icons.notifications_none, color: Colors.black87),
-                ),
+                Image.asset(
+                      Assets.appLogo,
+                      width: 120,
+                      height: 120,
+                      fit: BoxFit.contain,
+                    ),
                 Positioned(
                   right: 10,
                   top: 10,
@@ -78,27 +82,14 @@ class NoDataScreen extends StatelessWidget {
                     children: [
                       // Illustration (replace asset path if needed)
                       Image.asset(
-                        'assets/no_data.png',
-                        width: 240,
+                        Assets.group,
+                        width: 259,
+                        height: 239,
                         fit: BoxFit.contain,
-                        errorBuilder: (_, __, ___) => const Icon(
-                          Icons.search_off_rounded,
-                          size: 120,
-                          color: Color(0xFF9AA8B7),
-                        ),
                       ),
                       const SizedBox(height: 18),
 
-                      const Text(
-                        'No data is here,\nplease wait.',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: Color(0xFF7A8693),
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600,
-                          height: 1.3,
-                        ),
-                      ),
+                      
                     ],
                   ),
                 ),
