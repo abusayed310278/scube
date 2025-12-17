@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../../../core/constants/assets.dart';
 import 'data_type2_screen.dart';
 import 'no_data_screen.dart'; // ✅ add this file
 
@@ -502,7 +503,12 @@ class _DataTile extends StatelessWidget {
                   borderRadius: BorderRadius.circular(8),
                   border: Border.all(color: const Color(0xFFB9C7D8)),
                 ),
-                child: Icon(icon, size: 20, color: const Color(0xFF0A2A3A)),
+                child: Image.asset(
+                  Assets.appLogo,
+                  width: 120,
+                  height: 120,
+                  fit: BoxFit.contain,
+                ),
               ),
               const SizedBox(width: 10),
               Expanded(
