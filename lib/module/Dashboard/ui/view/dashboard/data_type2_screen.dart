@@ -27,24 +27,84 @@ class _ScmScreenState extends State<ScmScreen> {
   final int _revenueValue = 8897455;
 
   final _dataItemsToday = const [
-    _DataItem(label: "Data A", dot: Color(0xFF2F80ED), data: "2798.50 (29.53%)", cost: "35689 ৳"),
-    _DataItem(label: "Data B", dot: Color(0xFF6FCF97), data: "72598.50 (35.39%)", cost: "5259689 ৳"),
-    _DataItem(label: "Data C", dot: Color(0xFF9B51E0), data: "6598.36 (83.90%)", cost: "5698756 ৳"),
-    _DataItem(label: "Data D", dot: Color(0xFFF2994A), data: "6598.26 (36.59%)", cost: "356987 ৳"),
+    _DataItem(
+      label: "Data A",
+      dot: Color(0xFF2F80ED),
+      data: "2798.50 (29.53%)",
+      cost: "35689 ৳",
+    ),
+    _DataItem(
+      label: "Data B",
+      dot: Color(0xFF6FCF97),
+      data: "72598.50 (35.39%)",
+      cost: "5259689 ৳",
+    ),
+    _DataItem(
+      label: "Data C",
+      dot: Color(0xFF9B51E0),
+      data: "6598.36 (83.90%)",
+      cost: "5698756 ৳",
+    ),
+    _DataItem(
+      label: "Data D",
+      dot: Color(0xFFF2994A),
+      data: "6598.26 (36.59%)",
+      cost: "356987 ৳",
+    ),
   ];
 
   final _dataItemsCustomTop = const [
-    _DataItem(label: "Data A", dot: Color(0xFF2F80ED), data: "2798.50 (29.53%)", cost: "35689 ৳"),
-    _DataItem(label: "Data B", dot: Color(0xFF6FCF97), data: "72598.50 (35.39%)", cost: "5259689 ৳"),
-    _DataItem(label: "Data C", dot: Color(0xFF9B51E0), data: "6598.36 (83.90%)", cost: "5698756 ৳"),
-    _DataItem(label: "Data D", dot: Color(0xFFF2994A), data: "6598.26 (36.59%)", cost: "356987 ৳"),
+    _DataItem(
+      label: "Data A",
+      dot: Color(0xFF2F80ED),
+      data: "2798.50 (29.53%)",
+      cost: "35689 ৳",
+    ),
+    _DataItem(
+      label: "Data B",
+      dot: Color(0xFF6FCF97),
+      data: "72598.50 (35.39%)",
+      cost: "5259689 ৳",
+    ),
+    _DataItem(
+      label: "Data C",
+      dot: Color(0xFF9B51E0),
+      data: "6598.36 (83.90%)",
+      cost: "5698756 ৳",
+    ),
+    _DataItem(
+      label: "Data D",
+      dot: Color(0xFFF2994A),
+      data: "6598.26 (36.59%)",
+      cost: "356987 ৳",
+    ),
   ];
 
   final _dataItemsCustomBottom = const [
-    _DataItem(label: "Data A", dot: Color(0xFF2F80ED), data: "2798.50 (29.53%)", cost: "35689 ৳"),
-    _DataItem(label: "Data B", dot: Color(0xFF6FCF97), data: "72598.50 (35.39%)", cost: "5259689 ৳"),
-    _DataItem(label: "Data C", dot: Color(0xFF9B51E0), data: "6598.36 (83.90%)", cost: "5698756 ৳"),
-    _DataItem(label: "Data D", dot: Color(0xFFF2994A), data: "6598.26 (36.59%)", cost: "356987 ৳"),
+    _DataItem(
+      label: "Data A",
+      dot: Color(0xFF2F80ED),
+      data: "2798.50 (29.53%)",
+      cost: "35689 ৳",
+    ),
+    _DataItem(
+      label: "Data B",
+      dot: Color(0xFF6FCF97),
+      data: "72598.50 (35.39%)",
+      cost: "5259689 ৳",
+    ),
+    _DataItem(
+      label: "Data C",
+      dot: Color(0xFF9B51E0),
+      data: "6598.36 (83.90%)",
+      cost: "5698756 ৳",
+    ),
+    _DataItem(
+      label: "Data D",
+      dot: Color(0xFFF2994A),
+      data: "6598.26 (36.59%)",
+      cost: "356987 ৳",
+    ),
   ];
 
   final _revenueLines = const [
@@ -70,15 +130,26 @@ class _ScmScreenState extends State<ScmScreen> {
         centerTitle: true,
         title: const Text(
           "SCM",
+          textAlign: TextAlign.center,
           style: TextStyle(
-            color: Color(0xFF1F2A44),
-            fontWeight: FontWeight.w700,
-            letterSpacing: 0.2,
+            fontFamily: 'Inter',
+            // make sure Inter is added in pubspec.yaml
+            fontSize: 16,
+            height: 24 / 16,
+            // = 1.5 (line-height)
+            fontWeight: FontWeight.w500,
+            // Medium
+            letterSpacing: 0,
+            // 0%
+            color: Color(0xFF04063E), // #04063E
           ),
         ),
 
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new_rounded, color: Color(0xFF1F2A44)),
+          icon: const Icon(
+            Icons.arrow_back_ios_new_rounded,
+            color: Color(0xFF1F2A44),
+          ),
           onPressed: () => Navigator.pop(context),
         ),
 
@@ -89,18 +160,25 @@ class _ScmScreenState extends State<ScmScreen> {
               clipBehavior: Clip.none,
               children: [
                 IconButton(
-                  icon: const Icon(Icons.notifications_none_rounded, color: Color(0xFF1F2A44)),
+                  icon: const Icon(
+                    Icons.notifications_none_rounded,
+                    color: Color(0xFF1F2A44),
+                  ),
                   onPressed: () {},
                 ),
                 Positioned(
-                  right: 10,
-                  top: 11,
+                  left: 25,   // Figma: Left 11px
+                  top: 11,    // keep/adjust to match Figma if needed
                   child: Container(
-                    width: 8,
-                    height: 8,
-                    decoration: const BoxDecoration(color: Color(0xFFEB5757), shape: BoxShape.circle),
+                    width: 9,   // Figma: 9px
+                    height: 9,  // Figma: 9px
+                    decoration: const BoxDecoration(
+                      color: Color(0xFFDF2222), // Figma: #DF2222
+                      shape: BoxShape.circle,
+                    ),
                   ),
                 ),
+
               ],
             ),
           ),
@@ -124,7 +202,9 @@ class _ScmScreenState extends State<ScmScreen> {
                     _GaugeOnly(
                       scale: s,
                       valueText: _tab == 0
-                          ? (_customDate ? _gaugeValueDataCustom.toStringAsFixed(2) : _gaugeValueData.toStringAsFixed(2))
+                          ? (_customDate
+                                ? _gaugeValueDataCustom.toStringAsFixed(2)
+                                : _gaugeValueData.toStringAsFixed(2))
                           : _revenueValue.toString(),
                       unitText: _tab == 0 ? "kWh/Sqft" : "tk",
                       progress: 0.62,
@@ -172,8 +252,12 @@ class _ScmScreenState extends State<ScmScreen> {
 
                       _EnergyCardExact(
                         scale: s,
-                        energyKw: _customDate ? _energyKwCustom : _energyKwToday,
-                        items: _customDate ? _dataItemsCustomTop : _dataItemsToday,
+                        energyKw: _customDate
+                            ? _energyKwCustom
+                            : _energyKwToday,
+                        items: _customDate
+                            ? _dataItemsCustomTop
+                            : _dataItemsToday,
                       ),
 
                       if (_customDate) ...[
@@ -189,7 +273,9 @@ class _ScmScreenState extends State<ScmScreen> {
                       _RevenuePanelExact(
                         scale: s,
                         expanded: _revenueExpanded,
-                        onToggle: () => setState(() => _revenueExpanded = !_revenueExpanded),
+                        onToggle: () => setState(
+                          () => _revenueExpanded = !_revenueExpanded,
+                        ),
                         lines: _revenueLines,
                       ),
                     ],
@@ -211,7 +297,11 @@ class _HeaderTop extends StatelessWidget {
   final int tab;
   final ValueChanged<int> onTab;
 
-  const _HeaderTop({required this.scale, required this.tab, required this.onTab});
+  const _HeaderTop({
+    required this.scale,
+    required this.tab,
+    required this.onTab,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -233,7 +323,6 @@ class _HeaderTop extends StatelessWidget {
             ),
           ),
 
-
           Positioned(
             left: 0,
             right: 0,
@@ -250,29 +339,26 @@ class _HeaderTop extends StatelessWidget {
             ),
           ),
 
-
-
           // SEGMENTED TABS (FULL WIDTH INSIDE SHEET)
           Positioned(
-            left: 30 * s,
-            right: 30 * s,
+            left: 24 * s,
+            right: 24 * s,      // 360 - 24 - 24 = 312
             bottom: 20 * s,
             child: Container(
-              height: 42 * s,
-              width:30*s,
+              height: 48 * s,   // Figma: 48
               padding: EdgeInsets.all(3 * s),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(12 * s),
-                border: Border.all(color: const Color(0xFFCCD5E6)),
+                border: Border.all(
+                  width: 1,
+                  color: const Color(0xFFA5A7B9), // Figma: #A5A7B9
+                ),
               ),
-              child: _SegmentTabsRadio(
-                scale: s,
-                value: tab,
-                onChanged: onTab,
-              ),
+              child: _SegmentTabsRadio(scale: s, value: tab, onChanged: onTab),
             ),
           ),
+
         ],
       ),
     );
@@ -281,30 +367,6 @@ class _HeaderTop extends StatelessWidget {
 
 
 
-class _HeaderClipper extends CustomClipper<Path> {
-  @override
-  Path getClip(Size size) {
-    // Creates the side “ears” like your screenshot
-    final w = size.width;
-    final h = size.height;
-
-    final p = Path();
-    p.moveTo(0, 18);
-    p.quadraticBezierTo(0, 0, 18, 0);
-    p.lineTo(w - 18, 0);
-    p.quadraticBezierTo(w, 0, w, 18);
-
-    // down right side
-    p.lineTo(w, h);
-    p.lineTo(0, h);
-    p.close();
-    return p;
-  }
-
-  @override
-  bool shouldReclip(covariant CustomClipper<Path> oldClipper) => false;
-}
-
 // ============================ SEGMENT TABS (radio style) ============================
 
 class _SegmentTabsRadio extends StatelessWidget {
@@ -312,7 +374,11 @@ class _SegmentTabsRadio extends StatelessWidget {
   final int value;
   final ValueChanged<int> onChanged;
 
-  const _SegmentTabsRadio({required this.scale, required this.value, required this.onChanged});
+  const _SegmentTabsRadio({
+    required this.scale,
+    required this.value,
+    required this.onChanged,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -356,12 +422,20 @@ class _SegBtn extends StatelessWidget {
   final String label;
   final VoidCallback onTap;
 
-  const _SegBtn({required this.scale, required this.selected, required this.label, required this.onTap});
+  const _SegBtn({
+    required this.scale,
+    required this.selected,
+    required this.label,
+    required this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
     final s = scale;
-    final textColor = selected ? const Color(0xFF2F80ED) : const Color(0xFF7A869A);
+    final textColor = selected
+        ? const Color(0xFF0096FC) // Figma blue
+        : const Color(0xFF646984);
+
 
     return InkWell(
       onTap: onTap,
@@ -380,7 +454,11 @@ class _SegBtn extends StatelessWidget {
             SizedBox(width: 8 * s),
             Text(
               label,
-              style: TextStyle(fontSize: 13 * s, fontWeight: FontWeight.w800, color: textColor),
+              style: TextStyle(
+                fontSize: 13 * s,
+                fontWeight: FontWeight.w800,
+                color: textColor,
+              ),
             ),
           ],
         ),
@@ -398,31 +476,36 @@ class _RadioDot extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final s = scale;
-    if (selected) {
-      return Container(
-        width: 14 * s,
-        height: 14 * s,
-        decoration: const BoxDecoration(color: Color(0xFF2F80ED), shape: BoxShape.circle),
-        child: Center(
-          child: Container(
-            width: 6 * s,
-            height: 6 * s,
-            decoration: const BoxDecoration(color: Colors.white, shape: BoxShape.circle),
-          ),
-        ),
-      );
-    }
+
+    const blue = Color(0xFF0096FC); // Figma
+    const grey = Color(0xFFA5A7B9);
+
     return Container(
       width: 14 * s,
       height: 14 * s,
       decoration: BoxDecoration(
-        color: Colors.white,
         shape: BoxShape.circle,
-        border: Border.all(color: const Color(0xFFB0B9CC), width: 2 * s),
+        color: Colors.white,
+        border: Border.all(
+          color: selected ? blue : grey,
+          width: 1.5 * s,
+        ),
       ),
+      child: selected
+          ? Padding(
+        padding: EdgeInsets.all(2 * s), // Figma: Top/Left 2px inset
+        child: const DecoratedBox(
+          decoration: BoxDecoration(
+            color: blue,              // Figma: #0096FC
+            shape: BoxShape.circle,   // Figma: 10x10 ellipse
+          ),
+        ),
+      )
+          : const SizedBox.shrink(),
     );
   }
 }
+
 
 // ============================ GAUGE (no card container) ============================
 
@@ -442,30 +525,42 @@ class _GaugeOnly extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final s = scale;
+
     return SizedBox(
-      height: 160 * s,
+      width: 160 * s,
+      height: 130 * s, // Figma group
       child: Center(
         child: CustomPaint(
-          size: Size(170 * s, 170 * s),
+          size: Size(160 * s, 130 * s),
           painter: _GaugePainter(progress: progress),
           child: SizedBox(
-            width: 170 * s,
-            height: 170 * s,
+            width: 160 * s,
+            height: 130 * s,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
                   valueText,
+                  textAlign: TextAlign.center,
                   style: TextStyle(
-                    fontSize: 18 * s,
-                    fontWeight: FontWeight.w900,
-                    color: const Color(0xFF1F2A44),
+                    fontFamily: 'Inter',
+                    fontSize: 20 * s,
+                    height: 1.0, // line-height 100%
+                    fontWeight: FontWeight.w500,
+                    color: const Color(0xFF04063E),
                   ),
                 ),
-                SizedBox(height: 2 * s),
+                SizedBox(height: 8 * s),
                 Text(
                   unitText,
-                  style: TextStyle(fontSize: 12 * s, fontWeight: FontWeight.w600, color: const Color(0xFF1F2A44)),
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontFamily: 'Inter',
+                    fontSize: 14 * s,
+                    height: 1.0, // line-height 100%
+                    fontWeight: FontWeight.w500,
+                    color: const Color(0xFF04063E),
+                  ),
                 ),
               ],
             ),
@@ -476,43 +571,45 @@ class _GaugeOnly extends StatelessWidget {
   }
 }
 
+
 class _GaugePainter extends CustomPainter {
   final double progress;
+
   _GaugePainter({required this.progress});
 
   @override
   void paint(Canvas canvas, Size size) {
     final center = Offset(size.width / 2, size.height / 2);
-    final radius = size.width * 0.38;
+    final r = math.min(size.width, size.height) * 0.42;
+
+    final stroke = math.min(size.width, size.height) * 0.10;
 
     final base = Paint()
       ..color = const Color(0xFFDCEBFF)
-      ..strokeWidth = size.width * 0.07
+      ..strokeWidth = stroke
       ..style = PaintingStyle.stroke
       ..strokeCap = StrokeCap.round;
 
     final active = Paint()
       ..color = const Color(0xFF2F80ED)
-      ..strokeWidth = size.width * 0.07
+      ..strokeWidth = stroke
       ..style = PaintingStyle.stroke
       ..strokeCap = StrokeCap.round;
 
-    const start = math.pi; // left
-    const sweepTotal = math.pi;
+    const start = math.pi;      // left
+    const sweepTotal = -math.pi; // TOP semicircle (open bottom)
 
-    canvas.drawArc(Rect.fromCircle(center: center, radius: radius), start, sweepTotal, false, base);
-    canvas.drawArc(
-      Rect.fromCircle(center: center, radius: radius),
-      start,
-      sweepTotal * progress.clamp(0.0, 1.0),
-      false,
-      active,
-    );
+    final rect = Rect.fromCircle(center: center, radius: r);
+
+    canvas.drawArc(rect, start, sweepTotal, false, base);
+    canvas.drawArc(rect, start, sweepTotal * progress.clamp(0.0, 1.0), false, active);
   }
 
   @override
-  bool shouldRepaint(covariant _GaugePainter oldDelegate) => oldDelegate.progress != progress;
+  bool shouldRepaint(covariant _GaugePainter oldDelegate) =>
+      oldDelegate.progress != progress;
 }
+
 
 // ============================ TODAY / CUSTOM RADIO ============================
 
@@ -545,7 +642,9 @@ class _TodayCustomRow extends StatelessWidget {
               height: 12 * s,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: selected ? const Color(0xFF2F80ED) : const Color(0xFF4B5565),
+                color: selected
+                    ? const Color(0xFF2F80ED)
+                    : const Color(0xFF4B5565),
               ),
             ),
             SizedBox(width: 8 * s),
@@ -554,7 +653,9 @@ class _TodayCustomRow extends StatelessWidget {
               style: TextStyle(
                 fontSize: 12.5 * s,
                 fontWeight: FontWeight.w800,
-                color: selected ? const Color(0xFF2F80ED) : const Color(0xFF4B5565),
+                color: selected
+                    ? const Color(0xFF2F80ED)
+                    : const Color(0xFF4B5565),
               ),
             ),
           ],
@@ -592,7 +693,8 @@ class _DateRangeRow extends StatelessWidget {
     required this.onSearch,
   });
 
-  String _fmt(DateTime? d) => d == null ? "" : DateFormat("dd/MM/yyyy").format(d);
+  String _fmt(DateTime? d) =>
+      d == null ? "" : DateFormat("dd/MM/yyyy").format(d);
 
   @override
   Widget build(BuildContext context) {
@@ -620,11 +722,17 @@ class _DateRangeRow extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 11.5 * s,
                       fontWeight: FontWeight.w700,
-                      color: value.isEmpty ? const Color(0xFF8A95A6) : const Color(0xFF1F2A44),
+                      color: value.isEmpty
+                          ? const Color(0xFF8A95A6)
+                          : const Color(0xFF1F2A44),
                     ),
                   ),
                 ),
-                Icon(Icons.calendar_month_rounded, size: 16 * s, color: const Color(0xFF6B778C)),
+                Icon(
+                  Icons.calendar_month_rounded,
+                  size: 16 * s,
+                  color: const Color(0xFF6B778C),
+                ),
               ],
             ),
           ),
@@ -649,7 +757,11 @@ class _DateRangeRow extends StatelessWidget {
               borderRadius: BorderRadius.circular(6 * s),
               border: Border.all(color: const Color(0xFF2F80ED), width: 1.2),
             ),
-            child: Icon(Icons.search_rounded, size: 18 * s, color: const Color(0xFF2F80ED)),
+            child: Icon(
+              Icons.search_rounded,
+              size: 18 * s,
+              color: const Color(0xFF2F80ED),
+            ),
           ),
         ),
       ],
@@ -687,12 +799,20 @@ class _EnergyCardExact extends StatelessWidget {
             children: [
               Text(
                 "Energy Chart",
-                style: TextStyle(fontSize: 12 * s, fontWeight: FontWeight.w800, color: const Color(0xFF1F2A44)),
+                style: TextStyle(
+                  fontSize: 12 * s,
+                  fontWeight: FontWeight.w800,
+                  color: const Color(0xFF1F2A44),
+                ),
               ),
               const Spacer(),
               Text(
                 "${energyKw.toStringAsFixed(2)} kw",
-                style: TextStyle(fontSize: 22 * s, fontWeight: FontWeight.w900, color: const Color(0xFF0D164A)),
+                style: TextStyle(
+                  fontSize: 22 * s,
+                  fontWeight: FontWeight.w900,
+                  color: const Color(0xFF0D164A),
+                ),
               ),
             ],
           ),
@@ -736,7 +856,10 @@ class _EnergyRowExact extends StatelessWidget {
                 Container(
                   width: 8 * s,
                   height: 8 * s,
-                  decoration: BoxDecoration(color: item.dot, shape: BoxShape.circle),
+                  decoration: BoxDecoration(
+                    color: item.dot,
+                    shape: BoxShape.circle,
+                  ),
                 ),
                 SizedBox(height: 4 * s),
                 Text(
@@ -765,13 +888,31 @@ class _EnergyRowExact extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    Text("Data", style: TextStyle(fontSize: 11 * s, fontWeight: FontWeight.w600, color: const Color(0xFF7A869A))),
-                    Text("  :  ", style: TextStyle(fontSize: 11 * s, fontWeight: FontWeight.w700, color: const Color(0xFF7A869A))),
+                    Text(
+                      "Data",
+                      style: TextStyle(
+                        fontSize: 11 * s,
+                        fontWeight: FontWeight.w600,
+                        color: const Color(0xFF7A869A),
+                      ),
+                    ),
+                    Text(
+                      "  :  ",
+                      style: TextStyle(
+                        fontSize: 11 * s,
+                        fontWeight: FontWeight.w700,
+                        color: const Color(0xFF7A869A),
+                      ),
+                    ),
                     Expanded(
                       child: Text(
                         item.data,
                         overflow: TextOverflow.ellipsis,
-                        style: TextStyle(fontSize: 11 * s, fontWeight: FontWeight.w900, color: const Color(0xFF0D164A)),
+                        style: TextStyle(
+                          fontSize: 11 * s,
+                          fontWeight: FontWeight.w900,
+                          color: const Color(0xFF0D164A),
+                        ),
                       ),
                     ),
                   ],
@@ -779,13 +920,31 @@ class _EnergyRowExact extends StatelessWidget {
                 SizedBox(height: 4 * s),
                 Row(
                   children: [
-                    Text("Cost", style: TextStyle(fontSize: 11 * s, fontWeight: FontWeight.w600, color: const Color(0xFF7A869A))),
-                    Text("  :  ", style: TextStyle(fontSize: 11 * s, fontWeight: FontWeight.w700, color: const Color(0xFF7A869A))),
+                    Text(
+                      "Cost",
+                      style: TextStyle(
+                        fontSize: 11 * s,
+                        fontWeight: FontWeight.w600,
+                        color: const Color(0xFF7A869A),
+                      ),
+                    ),
+                    Text(
+                      "  :  ",
+                      style: TextStyle(
+                        fontSize: 11 * s,
+                        fontWeight: FontWeight.w700,
+                        color: const Color(0xFF7A869A),
+                      ),
+                    ),
                     Expanded(
                       child: Text(
                         item.cost,
                         overflow: TextOverflow.ellipsis,
-                        style: TextStyle(fontSize: 11 * s, fontWeight: FontWeight.w900, color: const Color(0xFF0D164A)),
+                        style: TextStyle(
+                          fontSize: 11 * s,
+                          fontWeight: FontWeight.w900,
+                          color: const Color(0xFF0D164A),
+                        ),
                       ),
                     ),
                   ],
@@ -798,7 +957,6 @@ class _EnergyRowExact extends StatelessWidget {
     );
   }
 }
-
 
 // ============================ REVENUE PANEL (exact toggle) ============================
 
@@ -830,39 +988,50 @@ class _RevenuePanelExact extends StatelessWidget {
         children: [
           InkWell(
             onTap: onToggle,
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 12 * s, vertical: 10 * s),
-              child: Row(
-                children: [
-                  Icon(Icons.bar_chart_rounded, size: 18 * s, color: const Color(0xFF2F80ED)),
-                  SizedBox(width: 10 * s),
-                  Text(
-                    "Data & Cost Info",
-                    style: TextStyle(fontSize: 12.5 * s, fontWeight: FontWeight.w900, color: const Color(0xFF0D164A)),
-                  ),
-                  const Spacer(),
-
-                  // BLUE FILLED CIRCLE (matches your screenshot)
-                  Container(
-                    width: 30 * s,
-                    height: 30 * s,
-                    decoration: const BoxDecoration(
-                      color: Color(0xFF2F80ED),
-                      shape: BoxShape.circle,
+            child: SizedBox(
+              height: 42 * s, // Figma: 42
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 12 * s),
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.bar_chart_rounded,
+                      size: 18 * s,
+                      color: const Color(0xFF646984), // adjust if needed
                     ),
-                    child: Center(
-                      child: Icon(
-                        expanded ? Icons.keyboard_double_arrow_up_rounded : Icons.keyboard_double_arrow_down_rounded,
-                        color: Colors.white,
-                        size: 18 * s,
+                    SizedBox(width: 10 * s),
+                    Text(
+                      "Data & Cost Info",
+                      style: TextStyle(
+                        fontFamily: 'Inter',
+                        fontSize: 12 * s,
+                        height: 1.0,
+                        fontWeight: FontWeight.w500,
+                        color: const Color(0xFF04063E),
                       ),
                     ),
-                  ),
-
-                ],
+                    const Spacer(),
+                    Container(
+                      width: 24 * s,   // keep small so row stays 42 high
+                      height: 24 * s,
+                      decoration: const BoxDecoration(
+                        color: Color(0xFF0096FC), // your figma blue
+                        shape: BoxShape.circle,
+                      ),
+                      child: Icon(
+                        expanded
+                            ? Icons.keyboard_double_arrow_up_rounded
+                            : Icons.keyboard_double_arrow_down_rounded,
+                        size: 16 * s,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
+
 
           if (expanded) ...[
             Divider(height: 1, thickness: 1, color: const Color(0xFFBFC9DA)),
@@ -876,14 +1045,22 @@ class _RevenuePanelExact extends StatelessWidget {
                         Expanded(
                           child: Text(
                             "${lines[i].k}  :",
-                            style: TextStyle(fontSize: 12 * s, fontWeight: FontWeight.w600, color: const Color(0xFF7A869A)),
+                            style: TextStyle(
+                              fontSize: 12 * s,
+                              fontWeight: FontWeight.w600,
+                              color: const Color(0xFF7A869A),
+                            ),
                           ),
                         ),
                         Expanded(
                           child: Text(
                             lines[i].v,
                             textAlign: TextAlign.left,
-                            style: TextStyle(fontSize: 12 * s, fontWeight: FontWeight.w900, color: const Color(0xFF0D164A)),
+                            style: TextStyle(
+                              fontSize: 12 * s,
+                              fontWeight: FontWeight.w900,
+                              color: const Color(0xFF0D164A),
+                            ),
                           ),
                         ),
                       ],
@@ -907,11 +1084,18 @@ class _DataItem {
   final Color dot;
   final String data;
   final String cost;
-  const _DataItem({required this.label, required this.dot, required this.data, required this.cost});
+
+  const _DataItem({
+    required this.label,
+    required this.dot,
+    required this.data,
+    required this.cost,
+  });
 }
 
 class _KVLine {
   final String k;
   final String v;
+
   const _KVLine({required this.k, required this.v});
 }
