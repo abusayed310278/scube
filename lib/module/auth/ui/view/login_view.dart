@@ -60,11 +60,14 @@ class _LoginScreenState extends State<LoginScreen> {
                     const SizedBox(height: 14),
                     const Text(
                       'SCUBE',
+                      textAlign: TextAlign.center,
                       style: TextStyle(
+                        fontFamily: 'Inter',
                         color: Colors.white,
-                        fontSize: 26,
-                        fontWeight: FontWeight.w900,
-                        letterSpacing: 1,
+                        fontSize: 24,
+                        fontWeight: FontWeight.w600, // Semi Bold
+                        height: 1.0, // line-height 100%
+                        letterSpacing: 0, // Figma: 0px
                       ),
                     ),
                     const SizedBox(height: 8),
@@ -72,11 +75,15 @@ class _LoginScreenState extends State<LoginScreen> {
                       'Control & Monitoring System',
                       textAlign: TextAlign.center,
                       style: TextStyle(
+                        fontFamily: 'Inter',
                         color: Colors.white,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w700,
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600, // Semi Bold
+                        height: 28 / 20, // line-height 28px
+                        letterSpacing: 0, // Figma: 0px
                       ),
                     ),
+
                   ],
                 ),
               ),
@@ -100,51 +107,71 @@ class _LoginScreenState extends State<LoginScreen> {
                     children: [
                       const SizedBox(height: 6),
                       const Center(
-                        child: Text(
+                        child: const Text(
                           'Login',
                           style: TextStyle(
-                            fontSize: 26,
-                            fontWeight: FontWeight.w900,
-                            color: Color(0xFF0F172A),
+                            fontFamily: 'Inter',
+                            fontSize: 24,
+                            fontWeight: FontWeight.w700, // Bold
+                            height: 1.5, // 150%
+                            letterSpacing: 0,
+                            color: Color(0xFF082438),
                           ),
                         ),
+
                       ),
                       const SizedBox(height: 22),
 
-                      TextField(
-                        controller: _username,
-                        decoration: InputDecoration(
-                          hintText: 'Username',
-                          hintStyle: const TextStyle(color: Color(0xFF94A3B8)),
-                          contentPadding:
-                          const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
-                          enabledBorder: border(const Color(0xFFD5DCE6)),
-                          focusedBorder: border(primaryBlue),
+                      SizedBox(
+                        height: 56,
+                        child: TextField(
+                          controller: _username,
+                          decoration: InputDecoration(
+                            hintText: 'Username',
+                            hintStyle: const TextStyle(
+                              fontFamily: 'Inter',
+                              color: Color(0xFF94A3B8),
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                            ),
+                            isDense: true,
+                            contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 18),
+                            enabledBorder: figmaBorder(),
+                            focusedBorder: figmaBorder(),
+                          ),
                         ),
                       ),
-                      const SizedBox(height: 14),
 
-                      TextField(
-                        controller: _password,
-                        obscureText: _obscure,
-                        decoration: InputDecoration(
-                          hintText: 'Password',
-                          hintStyle: const TextStyle(color: Color(0xFF94A3B8)),
-                          contentPadding:
-                          const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
-                          enabledBorder: border(const Color(0xFFD5DCE6)),
-                          focusedBorder: border(primaryBlue),
-                          suffixIcon: IconButton(
-                            onPressed: () => setState(() => _obscure = !_obscure),
-                            icon: Icon(
-                              _obscure
-                                  ? Icons.visibility_off_outlined
-                                  : Icons.visibility_outlined,
-                              color: const Color(0xFF64748B),
+                      const SizedBox(height: 12),
+
+                      SizedBox(
+                        height: 56,
+                        child: TextField(
+                          controller: _password,
+                          obscureText: _obscure,
+                          decoration: InputDecoration(
+                            hintText: 'Password',
+                            hintStyle: const TextStyle(
+                              fontFamily: 'Inter',
+                              color: Color(0xFF94A3B8),
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                            ),
+                            isDense: true,
+                            contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 18),
+                            enabledBorder: figmaBorder(),
+                            focusedBorder: figmaBorder(),
+                            suffixIcon: IconButton(
+                              onPressed: () => setState(() => _obscure = !_obscure),
+                              icon: Icon(
+                                _obscure ? Icons.visibility_off_outlined : Icons.visibility_outlined,
+                                color: const Color(0xFF64748B),
+                              ),
                             ),
                           ),
                         ),
                       ),
+
 
                       Align(
                         alignment: Alignment.centerRight,
@@ -158,71 +185,92 @@ class _LoginScreenState extends State<LoginScreen> {
                           child: const Text(
                             'Forget password?',
                             style: TextStyle(
-                              color: Color(0xFF64748B),
-                              fontWeight: FontWeight.w600,
+                              fontFamily: 'Inter',
+                              fontSize: 12,
+                              fontWeight: FontWeight.w500, // Medium
+                              height: 1.0, // 100%
+                              letterSpacing: 0,
+                              color: Color(0xFF5E5E5E),
+                              decoration: TextDecoration.underline,
+                              decorationStyle: TextDecorationStyle.solid,
+                              decorationThickness: 1, // looks closest in Flutter
                             ),
                           ),
                         ),
                       ),
+
 
                       const SizedBox(height: 8),
 
                       SizedBox(
-                        height: 52,
+                        width: 336,
+                        height: 60,
                         child: ElevatedButton(
                           onPressed: () {
                             Navigator.pushReplacement(
                               context,
-                              MaterialPageRoute(
-                                builder: (_) => const DashboardScreen(),
-                              ),
+                              MaterialPageRoute(builder: (_) => const DashboardScreen()),
                             );
                           },
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: primaryBlue,
+                            backgroundColor: const Color(0xFF0096FC),
                             foregroundColor: Colors.white,
+                            elevation: 0,
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
+                              borderRadius: BorderRadius.circular(10),
                             ),
                           ),
                           child: const Text(
                             'Login',
-                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w900),
+                            style: TextStyle(
+                              fontFamily: 'Inter',
+                              fontSize: 16,
+                              fontWeight: FontWeight.w700,
+                            ),
                           ),
                         ),
                       ),
+
 
                       const SizedBox(height: 16),
 
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.baseline,
-                        textBaseline: TextBaseline.alphabetic,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           const Text(
                             "Don’t have any account? ",
                             style: TextStyle(
+                              fontFamily: 'Inter',
+                              fontSize: 12,
+                              fontWeight: FontWeight.w500, // Medium
+                              height: 1.0, // 100%
+                              letterSpacing: 0,
                               color: Color(0xFF475569),
-                              fontWeight: FontWeight.w600,
                             ),
                           ),
                           TextButton(
                             style: TextButton.styleFrom(
                               padding: EdgeInsets.zero,
-                              minimumSize: Size.zero,
+                              minimumSize: const Size(0, 0),
                               tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                             ),
                             onPressed: () {},
                             child: const Text(
                               'Register Now',
                               style: TextStyle(
-                                fontWeight: FontWeight.w900,
+                                fontFamily: 'Inter',
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500, // Medium
+                                height: 1.0, // 100%
+                                letterSpacing: 0,
                                 color: Color(0xFF0096FC),
                               ),
                             ),
                           ),
                         ],
                       ),
+
                     ],
                   ),
                 ),
@@ -234,3 +282,9 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 }
+
+
+OutlineInputBorder figmaBorder() => OutlineInputBorder(
+  borderRadius: BorderRadius.circular(10),
+  borderSide: const BorderSide(color: Color(0xFFB9C6D6), width: 1),
+);
