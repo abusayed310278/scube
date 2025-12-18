@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../../core/constants/assets.dart';
+import '../../../../auth/ui/view/login_view.dart';
 import 'data_type2_screen.dart';
 import 'no_data_screen.dart';
 
@@ -72,9 +73,16 @@ class _DashboardScreenState extends State<DashboardScreen> {
         backgroundColor: Colors.white,
         elevation: 0.5,
         leading: IconButton(
-          onPressed: () {},
-          icon: const Icon(Icons.arrow_back_ios_new, color: Colors.black87, size: 18),
+          icon: const Icon(Icons.arrow_back_ios_new_rounded, color: Color(0xFF1F2A44)),
+          onPressed: () {
+            Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(builder: (_) => const LoginScreen()),
+                  (route) => false,
+            );
+          },
         ),
+
         title: const Text(
           'SCM',
           style: TextStyle(
@@ -176,7 +184,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                 d2: t.d2,
                                 onTap: () {
 
-                                  if (t.title == 'Data Type 2') {
+                                  if (t.title == 'Data View') {
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(builder: (_) => const ScmScreen()),

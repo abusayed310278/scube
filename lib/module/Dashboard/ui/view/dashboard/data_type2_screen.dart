@@ -76,10 +76,12 @@ class _ScmScreenState extends State<ScmScreen> {
             letterSpacing: 0.2,
           ),
         ),
+
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new_rounded, color: Color(0xFF1F2A44)),
-          onPressed: () {},
+          onPressed: () => Navigator.pop(context),
         ),
+
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 10),
