@@ -18,7 +18,7 @@ class _ScmScreenState extends State<ScmScreen> {
 
   bool _revenueExpanded = true;
 
-  // --- sample values (same as your screenshot) ---
+  // sample values
   final double _gaugeValueData = 55.00;
   final double _gaugeValueDataCustom = 57.00;
   final double _energyKwToday = 5.53;
@@ -27,84 +27,24 @@ class _ScmScreenState extends State<ScmScreen> {
   final int _revenueValue = 8897455;
 
   final _dataItemsToday = const [
-    _DataItem(
-      label: "Data A",
-      dot: Color(0xFF2F80ED),
-      data: "2798.50 (29.53%)",
-      cost: "35689 ৳",
-    ),
-    _DataItem(
-      label: "Data B",
-      dot: Color(0xFF6FCF97),
-      data: "72598.50 (35.39%)",
-      cost: "5259689 ৳",
-    ),
-    _DataItem(
-      label: "Data C",
-      dot: Color(0xFF9B51E0),
-      data: "6598.36 (83.90%)",
-      cost: "5698756 ৳",
-    ),
-    _DataItem(
-      label: "Data D",
-      dot: Color(0xFFF2994A),
-      data: "6598.26 (36.59%)",
-      cost: "356987 ৳",
-    ),
+    _DataItem(label: "Data A", dot: Color(0xFF2F80ED), data: "2798.50 (29.53%)", cost: "35689 ৳"),
+    _DataItem(label: "Data B", dot: Color(0xFF6FCF97), data: "72598.50 (35.39%)", cost: "5259689 ৳"),
+    _DataItem(label: "Data C", dot: Color(0xFF9B51E0), data: "6598.36 (83.90%)", cost: "5698756 ৳"),
+    _DataItem(label: "Data D", dot: Color(0xFFF2994A), data: "6598.26 (36.59%)", cost: "356987 ৳"),
   ];
 
   final _dataItemsCustomTop = const [
-    _DataItem(
-      label: "Data A",
-      dot: Color(0xFF2F80ED),
-      data: "2798.50 (29.53%)",
-      cost: "35689 ৳",
-    ),
-    _DataItem(
-      label: "Data B",
-      dot: Color(0xFF6FCF97),
-      data: "72598.50 (35.39%)",
-      cost: "5259689 ৳",
-    ),
-    _DataItem(
-      label: "Data C",
-      dot: Color(0xFF9B51E0),
-      data: "6598.36 (83.90%)",
-      cost: "5698756 ৳",
-    ),
-    _DataItem(
-      label: "Data D",
-      dot: Color(0xFFF2994A),
-      data: "6598.26 (36.59%)",
-      cost: "356987 ৳",
-    ),
+    _DataItem(label: "Data A", dot: Color(0xFF2F80ED), data: "2798.50 (29.53%)", cost: "35689 ৳"),
+    _DataItem(label: "Data B", dot: Color(0xFF6FCF97), data: "72598.50 (35.39%)", cost: "5259689 ৳"),
+    _DataItem(label: "Data C", dot: Color(0xFF9B51E0), data: "6598.36 (83.90%)", cost: "5698756 ৳"),
+    _DataItem(label: "Data D", dot: Color(0xFFF2994A), data: "6598.26 (36.59%)", cost: "356987 ৳"),
   ];
 
   final _dataItemsCustomBottom = const [
-    _DataItem(
-      label: "Data A",
-      dot: Color(0xFF2F80ED),
-      data: "2798.50 (29.53%)",
-      cost: "35689 ৳",
-    ),
-    _DataItem(
-      label: "Data B",
-      dot: Color(0xFF6FCF97),
-      data: "72598.50 (35.39%)",
-      cost: "5259689 ৳",
-    ),
-    _DataItem(
-      label: "Data C",
-      dot: Color(0xFF9B51E0),
-      data: "6598.36 (83.90%)",
-      cost: "5698756 ৳",
-    ),
-    _DataItem(
-      label: "Data D",
-      dot: Color(0xFFF2994A),
-      data: "6598.26 (36.59%)",
-      cost: "356987 ৳",
-    ),
+    _DataItem(label: "Data A", dot: Color(0xFF2F80ED), data: "2798.50 (29.53%)", cost: "35689 ৳"),
+    _DataItem(label: "Data B", dot: Color(0xFF6FCF97), data: "72598.50 (35.39%)", cost: "5259689 ৳"),
+    _DataItem(label: "Data C", dot: Color(0xFF9B51E0), data: "6598.36 (83.90%)", cost: "5698756 ৳"),
+    _DataItem(label: "Data D", dot: Color(0xFFF2994A), data: "6598.26 (36.59%)", cost: "356987 ৳"),
   ];
 
   final _revenueLines = const [
@@ -133,26 +73,17 @@ class _ScmScreenState extends State<ScmScreen> {
           textAlign: TextAlign.center,
           style: TextStyle(
             fontFamily: 'Inter',
-            // make sure Inter is added in pubspec.yaml
             fontSize: 16,
             height: 24 / 16,
-            // = 1.5 (line-height)
             fontWeight: FontWeight.w500,
-            // Medium
             letterSpacing: 0,
-            // 0%
-            color: Color(0xFF04063E), // #04063E
+            color: Color(0xFF04063E),
           ),
         ),
-
         leading: IconButton(
-          icon: const Icon(
-            Icons.arrow_back_ios_new_rounded,
-            color: Color(0xFF1F2A44),
-          ),
+          icon: const Icon(Icons.arrow_back_ios_new_rounded, color: Color(0xFF1F2A44)),
           onPressed: () => Navigator.pop(context),
         ),
-
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 10),
@@ -160,25 +91,21 @@ class _ScmScreenState extends State<ScmScreen> {
               clipBehavior: Clip.none,
               children: [
                 IconButton(
-                  icon: const Icon(
-                    Icons.notifications_none_rounded,
-                    color: Color(0xFF1F2A44),
-                  ),
+                  icon: const Icon(Icons.notifications_none_rounded, color: Color(0xFF1F2A44)),
                   onPressed: () {},
                 ),
                 Positioned(
-                  left: 25,   // Figma: Left 11px
-                  top: 11,    // keep/adjust to match Figma if needed
+                  left: 25,
+                  top: 11,
                   child: Container(
-                    width: 9,   // Figma: 9px
-                    height: 9,  // Figma: 9px
+                    width: 9,
+                    height: 9,
                     decoration: const BoxDecoration(
-                      color: Color(0xFFDF2222), // Figma: #DF2222
+                      color: Color(0xFFDF2222),
                       shape: BoxShape.circle,
                     ),
                   ),
                 ),
-
               ],
             ),
           ),
@@ -192,25 +119,23 @@ class _ScmScreenState extends State<ScmScreen> {
               tab: _tab,
               onTab: (v) => setState(() => _tab = v),
             ),
-
             Expanded(
               child: SingleChildScrollView(
-                padding: EdgeInsets.fromLTRB(16 * s, 0, 16 * s, 16 * s),
+                // ✅ Figma: left/right 24 so card becomes 312 wide
+                padding: EdgeInsets.fromLTRB(24 * s, 0, 24 * s, 16 * s),
                 child: Column(
                   children: [
-                    // ---- Gauge (NO card container – matches screenshot) ----
                     _GaugeOnly(
                       scale: s,
                       valueText: _tab == 0
                           ? (_customDate
-                                ? _gaugeValueDataCustom.toStringAsFixed(2)
-                                : _gaugeValueData.toStringAsFixed(2))
+                          ? _gaugeValueDataCustom.toStringAsFixed(2)
+                          : _gaugeValueData.toStringAsFixed(2))
                           : _revenueValue.toString(),
                       unitText: _tab == 0 ? "kWh/Sqft" : "tk",
-                      progress: 0.62,
+                      progress: 0.764,
                     ),
-
-                    SizedBox(height: 8 * s),
+                    SizedBox(height: 10 * s),
 
                     if (_tab == 0) ...[
                       _TodayCustomRow(
@@ -219,8 +144,7 @@ class _ScmScreenState extends State<ScmScreen> {
                         onToday: () => setState(() => _customDate = false),
                         onCustom: () => setState(() => _customDate = true),
                       ),
-
-                      SizedBox(height: 8 * s),
+                      SizedBox(height: 10 * s),
 
                       if (_customDate) ...[
                         _DateRangeRow(
@@ -247,17 +171,13 @@ class _ScmScreenState extends State<ScmScreen> {
                           },
                           onSearch: () {},
                         ),
-                        SizedBox(height: 10 * s),
+                        SizedBox(height: 12 * s),
                       ],
 
                       _EnergyCardExact(
                         scale: s,
-                        energyKw: _customDate
-                            ? _energyKwCustom
-                            : _energyKwToday,
-                        items: _customDate
-                            ? _dataItemsCustomTop
-                            : _dataItemsToday,
+                        energyKw: _customDate ? _energyKwCustom : _energyKwToday,
+                        items: _customDate ? _dataItemsCustomTop : _dataItemsToday,
                       ),
 
                       if (_customDate) ...[
@@ -273,9 +193,7 @@ class _ScmScreenState extends State<ScmScreen> {
                       _RevenuePanelExact(
                         scale: s,
                         expanded: _revenueExpanded,
-                        onToggle: () => setState(
-                          () => _revenueExpanded = !_revenueExpanded,
-                        ),
+                        onToggle: () => setState(() => _revenueExpanded = !_revenueExpanded),
                         lines: _revenueLines,
                       ),
                     ],
@@ -290,7 +208,7 @@ class _ScmScreenState extends State<ScmScreen> {
   }
 }
 
-// ============================ HEADER (curved white sheet) ============================
+// ============================ HEADER ============================
 
 class _HeaderTop extends StatelessWidget {
   final double scale;
@@ -311,7 +229,6 @@ class _HeaderTop extends StatelessWidget {
       height: 78 * s,
       child: Stack(
         children: [
-          // light blue bar
           Container(
             height: 46 * s,
             decoration: const BoxDecoration(
@@ -322,7 +239,6 @@ class _HeaderTop extends StatelessWidget {
               ),
             ),
           ),
-
           Positioned(
             left: 0,
             right: 0,
@@ -338,36 +254,28 @@ class _HeaderTop extends StatelessWidget {
               ),
             ),
           ),
-
-          // SEGMENTED TABS (FULL WIDTH INSIDE SHEET)
           Positioned(
             left: 24 * s,
-            right: 24 * s,      // 360 - 24 - 24 = 312
+            right: 24 * s,
             bottom: 20 * s,
             child: Container(
-              height: 48 * s,   // Figma: 48
+              height: 48 * s,
               padding: EdgeInsets.all(3 * s),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(12 * s),
-                border: Border.all(
-                  width: 1,
-                  color: const Color(0xFFA5A7B9), // Figma: #A5A7B9
-                ),
+                border: Border.all(width: 1, color: const Color(0xFFA5A7B9)),
               ),
               child: _SegmentTabsRadio(scale: s, value: tab, onChanged: onTab),
             ),
           ),
-
         ],
       ),
     );
   }
 }
 
-
-
-// ============================ SEGMENT TABS (radio style) ============================
+// ============================ SEGMENTED TABS ============================
 
 class _SegmentTabsRadio extends StatelessWidget {
   final double scale;
@@ -383,35 +291,28 @@ class _SegmentTabsRadio extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final s = scale;
-    return Container(
-      height: 42 * s,
-      padding: EdgeInsets.all(3 * s),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12 * s),
-        // border: Border.all(color: const Color(0xFFCCD5E6)),
-      ),
-      child: Row(
-        children: [
-          Expanded(
-            child: _SegBtn(
-              scale: s,
-              selected: value == 0,
-              label: "Data View",
-              onTap: () => onChanged(0),
-            ),
+
+    // ✅ no extra padding container (outer already has padding)
+    return Row(
+      children: [
+        Expanded(
+          child: _SegBtn(
+            scale: s,
+            selected: value == 0,
+            label: "Data View",
+            onTap: () => onChanged(0),
           ),
-          SizedBox(width: 6 * s),
-          Expanded(
-            child: _SegBtn(
-              scale: s,
-              selected: value == 1,
-              label: "Revenue View",
-              onTap: () => onChanged(1),
-            ),
+        ),
+        SizedBox(width: 6 * s),
+        Expanded(
+          child: _SegBtn(
+            scale: s,
+            selected: value == 1,
+            label: "Revenue View",
+            onTap: () => onChanged(1),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
@@ -432,20 +333,15 @@ class _SegBtn extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final s = scale;
-    final textColor = selected
-        ? const Color(0xFF0096FC) // Figma blue
-        : const Color(0xFF646984);
 
+    const blue = Color(0xFF0096FC);
+    const grey = Color(0xFF646984);
 
     return InkWell(
       onTap: onTap,
       borderRadius: BorderRadius.circular(8 * s),
       child: Container(
-        height: 36 * s,
-        decoration: BoxDecoration(
-          color: Colors.transparent,
-          borderRadius: BorderRadius.circular(8 * s),
-        ),
+        height: 42 * s,
         padding: EdgeInsets.symmetric(horizontal: 10 * s),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -455,9 +351,11 @@ class _SegBtn extends StatelessWidget {
             Text(
               label,
               style: TextStyle(
-                fontSize: 13 * s,
-                fontWeight: FontWeight.w800,
-                color: textColor,
+                fontFamily: 'Inter',
+                fontSize: 14 * s,
+                height: 1.0,
+                fontWeight: selected ? FontWeight.w600 : FontWeight.w500,
+                color: selected ? blue : grey,
               ),
             ),
           ],
@@ -476,8 +374,7 @@ class _RadioDot extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final s = scale;
-
-    const blue = Color(0xFF0096FC); // Figma
+    const blue = Color(0xFF0096FC);
     const grey = Color(0xFFA5A7B9);
 
     return Container(
@@ -486,19 +383,13 @@ class _RadioDot extends StatelessWidget {
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         color: Colors.white,
-        border: Border.all(
-          color: selected ? blue : grey,
-          width: 1.5 * s,
-        ),
+        border: Border.all(color: selected ? blue : grey, width: 1.5 * s),
       ),
       child: selected
           ? Padding(
-        padding: EdgeInsets.all(2 * s), // Figma: Top/Left 2px inset
+        padding: EdgeInsets.all(2 * s),
         child: const DecoratedBox(
-          decoration: BoxDecoration(
-            color: blue,              // Figma: #0096FC
-            shape: BoxShape.circle,   // Figma: 10x10 ellipse
-          ),
+          decoration: BoxDecoration(color: blue, shape: BoxShape.circle),
         ),
       )
           : const SizedBox.shrink(),
@@ -506,8 +397,7 @@ class _RadioDot extends StatelessWidget {
   }
 }
 
-
-// ============================ GAUGE (no card container) ============================
+// ============================ GAUGE ============================
 
 class _GaugeOnly extends StatelessWidget {
   final double scale;
@@ -528,7 +418,7 @@ class _GaugeOnly extends StatelessWidget {
 
     return SizedBox(
       width: 160 * s,
-      height: 130 * s, // Figma group
+      height: 130 * s,
       child: Center(
         child: CustomPaint(
           size: Size(160 * s, 130 * s),
@@ -545,19 +435,19 @@ class _GaugeOnly extends StatelessWidget {
                   style: TextStyle(
                     fontFamily: 'Inter',
                     fontSize: 20 * s,
-                    height: 1.0, // line-height 100%
+                    height: 1.0,
                     fontWeight: FontWeight.w500,
                     color: const Color(0xFF04063E),
                   ),
                 ),
-                SizedBox(height: 8 * s),
+                SizedBox(height: 6 * s),
                 Text(
                   unitText,
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontFamily: 'Inter',
                     fontSize: 14 * s,
-                    height: 1.0, // line-height 100%
+                    height: 1.0,
                     fontWeight: FontWeight.w500,
                     color: const Color(0xFF04063E),
                   ),
@@ -571,7 +461,6 @@ class _GaugeOnly extends StatelessWidget {
   }
 }
 
-
 class _GaugePainter extends CustomPainter {
   final double progress;
 
@@ -579,39 +468,41 @@ class _GaugePainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
+    final minSide = math.min(size.width, size.height);
     final center = Offset(size.width / 2, size.height / 2);
-    final r = math.min(size.width, size.height) * 0.42;
 
-    final stroke = math.min(size.width, size.height) * 0.10;
+    final radius = minSide * 0.46;
+    final stroke = minSide * 0.11;
+
+    const activeColor = Color(0xFF4E91FD);
+    const baseColor = Color(0xFFE6F4FF);
 
     final base = Paint()
-      ..color = const Color(0xFFDCEBFF)
+      ..color = baseColor
       ..strokeWidth = stroke
       ..style = PaintingStyle.stroke
       ..strokeCap = StrokeCap.round;
 
     final active = Paint()
-      ..color = const Color(0xFF2F80ED)
+      ..color = activeColor
       ..strokeWidth = stroke
       ..style = PaintingStyle.stroke
       ..strokeCap = StrokeCap.round;
 
-    const start = math.pi;      // left
-    const sweepTotal = -math.pi; // TOP semicircle (open bottom)
+    final start = 139 * math.pi / 180;
+    final sweepTotal = 258 * math.pi / 180;
 
-    final rect = Rect.fromCircle(center: center, radius: r);
+    final rect = Rect.fromCircle(center: center, radius: radius);
 
     canvas.drawArc(rect, start, sweepTotal, false, base);
     canvas.drawArc(rect, start, sweepTotal * progress.clamp(0.0, 1.0), false, active);
   }
 
   @override
-  bool shouldRepaint(covariant _GaugePainter oldDelegate) =>
-      oldDelegate.progress != progress;
+  bool shouldRepaint(covariant _GaugePainter oldDelegate) => oldDelegate.progress != progress;
 }
 
-
-// ============================ TODAY / CUSTOM RADIO ============================
+// ============================ TODAY / CUSTOM ROW ============================
 
 class _TodayCustomRow extends StatelessWidget {
   final double scale;
@@ -630,32 +521,49 @@ class _TodayCustomRow extends StatelessWidget {
   Widget build(BuildContext context) {
     final s = scale;
 
+    const blue = Color(0xFF0096FC);
+    const grey = Color(0xFF646984);
+
+    Widget radioDot(bool selected) {
+      return Container(
+        width: 10 * s,
+        height: 10 * s,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: Colors.white,
+          border: Border.all(
+            color: selected ? blue : grey,
+            width: 0.5 * s,
+          ),
+        ),
+        child: selected
+            ? Center(
+          child: Container(
+            width: 6 * s,
+            height: 6 * s,
+            decoration: const BoxDecoration(color: blue, shape: BoxShape.circle),
+          ),
+        )
+            : const SizedBox.shrink(),
+      );
+    }
+
     Widget item(bool selected, String text, VoidCallback onTap) {
       return InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(10 * s),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Container(
-              width: 12 * s,
-              height: 12 * s,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: selected
-                    ? const Color(0xFF2F80ED)
-                    : const Color(0xFF4B5565),
-              ),
-            ),
-            SizedBox(width: 8 * s),
+            radioDot(selected),
+            SizedBox(width: 6 * s),
             Text(
               text,
               style: TextStyle(
-                fontSize: 12.5 * s,
-                fontWeight: FontWeight.w800,
-                color: selected
-                    ? const Color(0xFF2F80ED)
-                    : const Color(0xFF4B5565),
+                fontFamily: 'Inter',
+                fontSize: 14 * s,
+                height: 1.0,
+                fontWeight: selected ? FontWeight.w600 : FontWeight.w500,
+                color: selected ? blue : grey,
               ),
             ),
           ],
@@ -663,18 +571,21 @@ class _TodayCustomRow extends StatelessWidget {
       );
     }
 
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        item(!custom, "Today Data", onToday),
-        SizedBox(width: 18 * s),
-        item(custom, "Custom Date Data", onCustom),
-      ],
+    return SizedBox(
+      width: 246 * s,
+      height: 17 * s,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          item(!custom, "Today Data", onToday),
+          item(custom, "Custom Date Data", onCustom),
+        ],
+      ),
     );
   }
 }
 
-// ============================ DATE RANGE ROW ============================
+// ============================ DATE RANGE ============================
 
 class _DateRangeRow extends StatelessWidget {
   final double scale;
@@ -693,8 +604,7 @@ class _DateRangeRow extends StatelessWidget {
     required this.onSearch,
   });
 
-  String _fmt(DateTime? d) =>
-      d == null ? "" : DateFormat("dd/MM/yyyy").format(d);
+  String _fmt(DateTime? d) => d == null ? "" : DateFormat("dd/MM/yyyy").format(d);
 
   @override
   Widget build(BuildContext context) {
@@ -711,7 +621,7 @@ class _DateRangeRow extends StatelessWidget {
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(6 * s),
-              border: Border.all(color: const Color(0xFFBFC9DA)),
+              border: Border.all(color: const Color(0xFFB6B8D0)),
             ),
             child: Row(
               children: [
@@ -720,19 +630,15 @@ class _DateRangeRow extends StatelessWidget {
                     value.isEmpty ? hint : value,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
-                      fontSize: 11.5 * s,
-                      fontWeight: FontWeight.w700,
-                      color: value.isEmpty
-                          ? const Color(0xFF8A95A6)
-                          : const Color(0xFF1F2A44),
+                      fontFamily: 'Inter',
+                      fontSize: 12 * s,
+                      height: 1.0,
+                      fontWeight: FontWeight.w500,
+                      color: value.isEmpty ? const Color(0xFF8A95A6) : const Color(0xFF04063E),
                     ),
                   ),
                 ),
-                Icon(
-                  Icons.calendar_month_rounded,
-                  size: 16 * s,
-                  color: const Color(0xFF6B778C),
-                ),
+                Icon(Icons.calendar_month_rounded, size: 16 * s, color: const Color(0xFF646984)),
               ],
             ),
           ),
@@ -755,13 +661,9 @@ class _DateRangeRow extends StatelessWidget {
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(6 * s),
-              border: Border.all(color: const Color(0xFF2F80ED), width: 1.2),
+              border: Border.all(color: const Color(0xFF0096FC), width: 1),
             ),
-            child: Icon(
-              Icons.search_rounded,
-              size: 18 * s,
-              color: const Color(0xFF2F80ED),
-            ),
+            child: Icon(Icons.search_rounded, size: 18 * s, color: const Color(0xFF0096FC)),
           ),
         ),
       ],
@@ -769,7 +671,7 @@ class _DateRangeRow extends StatelessWidget {
   }
 }
 
-// ============================ ENERGY CARD (exact style) ============================
+// ============================ ENERGY CARD ============================
 
 class _EnergyCardExact extends StatelessWidget {
   final double scale;
@@ -785,43 +687,58 @@ class _EnergyCardExact extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final s = scale;
-    return Container(
-      width: double.infinity,
-      padding: EdgeInsets.fromLTRB(12 * s, 10 * s, 12 * s, 10 * s),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(10 * s),
-        border: Border.all(color: const Color(0xFFBFC9DA)),
-      ),
-      child: Column(
-        children: [
-          Row(
-            children: [
-              Text(
-                "Energy Chart",
-                style: TextStyle(
-                  fontSize: 12 * s,
-                  fontWeight: FontWeight.w800,
-                  color: const Color(0xFF1F2A44),
-                ),
+
+    return SizedBox(
+      height: 267 * s, // ✅ Figma: 267
+      child: Container(
+        width: double.infinity, // ✅ becomes 312 because outer padding is 24
+        padding: EdgeInsets.fromLTRB(12 * s, 10 * s, 12 * s, 10 * s),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(10 * s),
+          border: Border.all(color: const Color(0xFFB6B8D0)),
+        ),
+        child: Column(
+          children: [
+            // ✅ header group height 39
+            SizedBox(
+              height: 39 * s,
+              child: Row(
+                children: [
+                  SizedBox(
+                    width: 90 * s,
+                    child: Text(
+                      "Energy Chart",
+                      style: TextStyle(
+                        fontFamily: 'Inter',
+                        fontSize: 14 * s,
+                        height: 1.0,
+                        fontWeight: FontWeight.w600,
+                        color: const Color(0xFF04063E),
+                      ),
+                    ),
+                  ),
+                  const Spacer(),
+                  Text(
+                    "${energyKw.toStringAsFixed(2)} kw",
+                    style: TextStyle(
+                      fontFamily: 'Inter',
+                      fontSize: 32 * s,
+                      height: 1.0,
+                      fontWeight: FontWeight.w600,
+                      color: const Color(0xFF04063E),
+                    ),
+                  ),
+                ],
               ),
-              const Spacer(),
-              Text(
-                "${energyKw.toStringAsFixed(2)} kw",
-                style: TextStyle(
-                  fontSize: 22 * s,
-                  fontWeight: FontWeight.w900,
-                  color: const Color(0xFF0D164A),
-                ),
-              ),
+            ),
+            SizedBox(height: 8 * s),
+            for (int i = 0; i < items.length; i++) ...[
+              _EnergyRowExact(scale: s, item: items[i]),
+              if (i != items.length - 1) SizedBox(height: 6 * s),
             ],
-          ),
-          SizedBox(height: 10 * s),
-          for (int i = 0; i < items.length; i++) ...[
-            _EnergyRowExact(scale: s, item: items[i]),
-            if (i != items.length - 1) SizedBox(height: 8 * s),
           ],
-        ],
+        ),
       ),
     );
   }
@@ -837,128 +754,142 @@ class _EnergyRowExact extends StatelessWidget {
   Widget build(BuildContext context) {
     final s = scale;
 
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 10 * s, vertical: 8 * s),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(6 * s),
-        border: Border.all(color: const Color(0xFFBFC9DA)),
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          // LEFT FIXED BLOCK (dot top + label bottom)
-          SizedBox(
-            width: 56 * s,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Container(
-                  width: 8 * s,
-                  height: 8 * s,
-                  decoration: BoxDecoration(
-                    color: item.dot,
-                    shape: BoxShape.circle,
+    const borderC = Color(0xFFB6B8D0);
+    const dark = Color(0xFF04063E);
+    const grey = Color(0xFF646984);
+
+    return SizedBox(
+      height: 42 * s, // ✅ Figma: 42
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 10 * s),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(6 * s),
+          border: Border.all(color: borderC),
+        ),
+        child: Row(
+          children: [
+            SizedBox(
+              width: 39 * s,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    width: 6 * s,
+                    height: 6 * s,
+                    decoration: BoxDecoration(color: item.dot, shape: BoxShape.circle),
                   ),
-                ),
-                SizedBox(height: 4 * s),
-                Text(
-                  item.label,
-                  style: TextStyle(
-                    fontSize: 12 * s,
-                    fontWeight: FontWeight.w900,
-                    color: const Color(0xFF0D164A),
+                  SizedBox(height: 4 * s),
+                  Text(
+                    item.label,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontFamily: 'Inter',
+                      fontSize: 12 * s,
+                      height: 1.0,
+                      fontWeight: FontWeight.w600,
+                      color: dark,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-
-          // VERTICAL DIVIDER (exact like screenshot)
-          Container(
-            width: 1,
-            height: 34 * s,
-            margin: EdgeInsets.symmetric(horizontal: 10 * s),
-            color: const Color(0xFFBFC9DA),
-          ),
-
-          // RIGHT CONTENT
-          Expanded(
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    Text(
-                      "Data",
-                      style: TextStyle(
-                        fontSize: 11 * s,
-                        fontWeight: FontWeight.w600,
-                        color: const Color(0xFF7A869A),
-                      ),
-                    ),
-                    Text(
-                      "  :  ",
-                      style: TextStyle(
-                        fontSize: 11 * s,
-                        fontWeight: FontWeight.w700,
-                        color: const Color(0xFF7A869A),
-                      ),
-                    ),
-                    Expanded(
-                      child: Text(
-                        item.data,
-                        overflow: TextOverflow.ellipsis,
+            Container(
+              width: 1,
+              height: 34 * s,
+              margin: EdgeInsets.symmetric(horizontal: 10 * s),
+              color: borderC,
+            ),
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Row(
+                    children: [
+                      Text(
+                        "Data",
                         style: TextStyle(
-                          fontSize: 11 * s,
-                          fontWeight: FontWeight.w900,
-                          color: const Color(0xFF0D164A),
+                          fontFamily: 'Inter',
+                          fontSize: 12 * s,
+                          height: 1.0,
+                          fontWeight: FontWeight.w500,
+                          color: grey,
                         ),
                       ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 4 * s),
-                Row(
-                  children: [
-                    Text(
-                      "Cost",
-                      style: TextStyle(
-                        fontSize: 11 * s,
-                        fontWeight: FontWeight.w600,
-                        color: const Color(0xFF7A869A),
-                      ),
-                    ),
-                    Text(
-                      "  :  ",
-                      style: TextStyle(
-                        fontSize: 11 * s,
-                        fontWeight: FontWeight.w700,
-                        color: const Color(0xFF7A869A),
-                      ),
-                    ),
-                    Expanded(
-                      child: Text(
-                        item.cost,
-                        overflow: TextOverflow.ellipsis,
+                      Text(
+                        "  :  ",
                         style: TextStyle(
-                          fontSize: 11 * s,
-                          fontWeight: FontWeight.w900,
-                          color: const Color(0xFF0D164A),
+                          fontFamily: 'Inter',
+                          fontSize: 12 * s,
+                          height: 1.0,
+                          fontWeight: FontWeight.w500,
+                          color: grey,
                         ),
                       ),
-                    ),
-                  ],
-                ),
-              ],
+                      Expanded(
+                        child: Text(
+                          item.data,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontFamily: 'Inter',
+                            fontSize: 12 * s,
+                            height: 1.0,
+                            fontWeight: FontWeight.w600,
+                            color: dark,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 4 * s),
+                  Row(
+                    children: [
+                      Text(
+                        "Cost",
+                        style: TextStyle(
+                          fontFamily: 'Inter',
+                          fontSize: 12 * s,
+                          height: 1.0,
+                          fontWeight: FontWeight.w500,
+                          color: grey,
+                        ),
+                      ),
+                      Text(
+                        "  :  ",
+                        style: TextStyle(
+                          fontFamily: 'Inter',
+                          fontSize: 12 * s,
+                          height: 1.0,
+                          fontWeight: FontWeight.w500,
+                          color: grey,
+                        ),
+                      ),
+                      Expanded(
+                        child: Text(
+                          item.cost,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontFamily: 'Inter',
+                            fontSize: 12 * s,
+                            height: 1.0,
+                            fontWeight: FontWeight.w600,
+                            color: dark,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
 }
 
-// ============================ REVENUE PANEL (exact toggle) ============================
+// ============================ REVENUE PANEL ============================
 
 class _RevenuePanelExact extends StatelessWidget {
   final double scale;
@@ -982,23 +913,19 @@ class _RevenuePanelExact extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(10 * s),
-        border: Border.all(color: const Color(0xFFBFC9DA)),
+        border: Border.all(color: const Color(0xFFB6B8D0)),
       ),
       child: Column(
         children: [
           InkWell(
             onTap: onToggle,
             child: SizedBox(
-              height: 42 * s, // Figma: 42
+              height: 42 * s,
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 12 * s),
                 child: Row(
                   children: [
-                    Icon(
-                      Icons.bar_chart_rounded,
-                      size: 18 * s,
-                      color: const Color(0xFF646984), // adjust if needed
-                    ),
+                    Icon(Icons.bar_chart_rounded, size: 18 * s, color: const Color(0xFF646984)),
                     SizedBox(width: 10 * s),
                     Text(
                       "Data & Cost Info",
@@ -1011,19 +938,19 @@ class _RevenuePanelExact extends StatelessWidget {
                       ),
                     ),
                     const Spacer(),
+
+                    // 24x24, border 1, blue, rotate 90
                     Container(
-                      width: 24 * s,   // keep small so row stays 42 high
+                      width: 24 * s,
                       height: 24 * s,
-                      decoration: const BoxDecoration(
-                        color: Color(0xFF0096FC), // your figma blue
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF0096FC),
                         shape: BoxShape.circle,
+                        border: Border.all(width: 1, color: const Color(0xFF0096FC)),
                       ),
-                      child: Icon(
-                        expanded
-                            ? Icons.keyboard_double_arrow_up_rounded
-                            : Icons.keyboard_double_arrow_down_rounded,
-                        size: 16 * s,
-                        color: Colors.white,
+                      child: Transform.rotate(
+                        angle: expanded ? 3 * math.pi / 2 : math.pi / 2,
+                        child: Icon(Icons.expand_more, size: 18 * s, color: Colors.white),
                       ),
                     ),
                   ],
@@ -1031,10 +958,8 @@ class _RevenuePanelExact extends StatelessWidget {
               ),
             ),
           ),
-
-
           if (expanded) ...[
-            Divider(height: 1, thickness: 1, color: const Color(0xFFBFC9DA)),
+            const Divider(height: 1, thickness: 1, color: Color(0xFFB6B8D0)),
             Padding(
               padding: EdgeInsets.fromLTRB(12 * s, 10 * s, 12 * s, 12 * s),
               child: Column(
@@ -1046,20 +971,23 @@ class _RevenuePanelExact extends StatelessWidget {
                           child: Text(
                             "${lines[i].k}  :",
                             style: TextStyle(
+                              fontFamily: 'Inter',
                               fontSize: 12 * s,
-                              fontWeight: FontWeight.w600,
-                              color: const Color(0xFF7A869A),
+                              height: 1.0,
+                              fontWeight: FontWeight.w500,
+                              color: const Color(0xFF646984),
                             ),
                           ),
                         ),
                         Expanded(
                           child: Text(
                             lines[i].v,
-                            textAlign: TextAlign.left,
                             style: TextStyle(
+                              fontFamily: 'Inter',
                               fontSize: 12 * s,
-                              fontWeight: FontWeight.w900,
-                              color: const Color(0xFF0D164A),
+                              height: 1.0,
+                              fontWeight: FontWeight.w600,
+                              color: const Color(0xFF04063E),
                             ),
                           ),
                         ),
@@ -1077,7 +1005,7 @@ class _RevenuePanelExact extends StatelessWidget {
   }
 }
 
-// ============================ Models ============================
+// ============================ MODELS ============================
 
 class _DataItem {
   final String label;
