@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../../core/constants/assets.dart';
 import 'data_type2_screen.dart';
-import 'no_data_screen.dart'; // ✅ add this file
+import 'no_data_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -16,12 +16,56 @@ class _DashboardScreenState extends State<DashboardScreen> {
   int sourceTabIndex = 0; // 0=Source, 1=Load
 
   static const bg = Color(0xFFE6EDF7);
-  static const primary = Color(0xFF0B88F1);
-  static const textDark = Color(0xFF0A2A3A);
   static const border = Color(0xFFB9C7D8);
+
+  final ScrollController _tilesCtrl = ScrollController();
+
+  @override
+  void dispose() {
+    _tilesCtrl.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
+    // ✅ scrollable area height (adjust if you want)
+    final double tilesBoxHeight = 260;
+
+    final tiles = <_DataTileModel>[
+      _DataTileModel(
+        image: AssetImage(Assets.dataview),
+        title: 'Data View',
+        statusText: '(Active)',
+        statusColor: const Color(0xFF0B88F1),
+        d1: '55505.63',
+        d2: '58805.63',
+      ),
+      _DataTileModel(
+        image: AssetImage(Assets.datatype2),
+        title: 'Data Type 2',
+        statusText: '(Active)',
+        statusColor: const Color(0xFF0B88F1),
+        d1: '55505.63',
+        d2: '58805.63',
+      ),
+      _DataTileModel(
+        image: AssetImage(Assets.dataview3),
+        title: 'Data Type 3',
+        statusText: '(Inactive)',
+        statusColor: const Color(0xFF0B88F1),
+        d1: '55505.63',
+        d2: '58805.63',
+      ),
+      _DataTileModel(
+        image: AssetImage(Assets.dataview),
+        title: 'Total Solar',
+        statusText: '(Active)',
+        statusColor: const Color(0xFF0B88F1),
+        d1: '55505.63',
+        d2: '58805.63',
+      ),
+    ];
+
     return Scaffold(
       backgroundColor: bg,
       appBar: AppBar(
@@ -76,14 +120,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
               child: _MainCard(
                 child: Column(
                   children: [
-                    // Top Tabs: Summary | SLD | Data
                     _TopTabs(
                       selectedIndex: topTabIndex,
                       onChanged: (i) => setState(() => topTabIndex = i),
                     ),
                     const SizedBox(height: 10),
 
-                    // Electricity title + divider
                     const Text(
                       'Electricity',
                       style: TextStyle(
@@ -96,14 +138,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     Container(height: 1, color: Colors.black26),
                     const SizedBox(height: 12),
 
-                    // Ring
                     const _PowerRing(
                       label: 'Total Power',
                       valueText: '5.53 kw',
                     ),
                     const SizedBox(height: 14),
 
-                    // Source/Load toggle
                     _SegmentTabs(
                       leftText: 'Source',
                       rightText: 'Load',
@@ -112,63 +152,57 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     ),
                     const SizedBox(height: 10),
 
-                    // List container
+                    // ✅ SCROLLABLE LIST CONTAINER (red area)
                     _ListContainer(
                       borderColor: border,
-                      child: Column(
-                        children: [
-                          const _DataTile(
-                            icon: Icons.grid_view_rounded,
-                            title: 'Data View',
-                            statusText: '(Active)',
-                            statusColor: Color(0xFF0B88F1),
-                            d1: '55505.63',
-                            d2: '58805.63',
-                          ),
-                          const SizedBox(height: 10),
-                          _DataTile(
-                            icon: Icons.storage,
-                            title: "Data type 2",
-                            statusText: "Active",
-                            statusColor: Colors.green,
-                            d1: "123",
-                            d2: "456",
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (_) => const DataType2Screen(),
-                                ),
+                      child: SizedBox(
+                        height: tilesBoxHeight,
+                        child: Scrollbar(
+                          controller: _tilesCtrl,
+                          thumbVisibility: true,
+                          child: ListView.separated(
+                            controller: _tilesCtrl,
+                            padding: const EdgeInsets.fromLTRB(0, 0, 10, 0), // space for scrollbar
+                            itemCount: tiles.length,
+                            separatorBuilder: (_, __) => const SizedBox(height: 10),
+                            itemBuilder: (context, i) {
+                              final t = tiles[i];
+                              return _DataTile(
+                                image: t.image,
+                                title: t.title,
+                                statusText: t.statusText,
+                                statusColor: t.statusColor,
+                                d1: t.d1,
+                                d2: t.d2,
+                                onTap: () {
+
+                                  if (t.title == 'Data Type 2') {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(builder: (_) => const ScmScreen()),
+                                    );
+                                  }
+
+                                },
                               );
                             },
                           ),
-                          const SizedBox(height: 10),
-                          const _DataTile(
-                            icon: Icons.electrical_services_rounded,
-                            title: 'Data Type 3',
-                            statusText: '(Inactive)',
-                            statusColor: Colors.red,
-                            d1: '55505.63',
-                            d2: '58805.63',
-                          ),
-                        ],
+                        ),
                       ),
                     ),
 
                     const SizedBox(height: 14),
 
-                    // Bottom menu
                     _BottomGrid(
                       items: const [
-                        _MenuItem('Analysis Pro', Icons.analytics_outlined),
-                        _MenuItem('G. Generator', Icons.local_shipping_outlined),
-                        _MenuItem('Plant Summery', Icons.bolt_outlined),
-                        _MenuItem('Natural Gas', Icons.local_fire_department_outlined),
-                        _MenuItem('D. Generator', Icons.precision_manufacturing_outlined),
-                        _MenuItem('Water Process', Icons.water_drop_outlined),
+                        _MenuItem('Analysis Pro', Assets.analysis),
+                        _MenuItem('G. Generator', Assets.generator),
+                        _MenuItem('Plant Summery', Assets.plant),
+                        _MenuItem('Natural Gas', Assets.natural),
+                        _MenuItem('Water Process', Assets.generator),
+                        _MenuItem('D. Generator', Assets.water),
                       ],
                       onTap: (i) {
-                        // ✅ Natural Gas is index 3
                         if (i == 3) {
                           Navigator.push(
                             context,
@@ -186,6 +220,26 @@ class _DashboardScreenState extends State<DashboardScreen> {
       ),
     );
   }
+}
+
+/* -------------------- models -------------------- */
+
+class _DataTileModel {
+  _DataTileModel({
+    required this.image,
+    required this.title,
+    required this.statusText,
+    required this.statusColor,
+    required this.d1,
+    required this.d2,
+  });
+
+  final ImageProvider image;
+  final String title;
+  final String statusText;
+  final Color statusColor;
+  final String d1;
+  final String d2;
 }
 
 /* -------------------- Main Card -------------------- */
@@ -218,31 +272,40 @@ class _TopTabs extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 40,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border.all(color: const Color(0xFFB9C7D8)),
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: Row(
-        children: [
-          _TopTabButton(
-            text: 'Summery',
-            isSelected: selectedIndex == 0,
-            onTap: () => onChanged(0),
-          ),
-          _TopTabButton(
-            text: 'SLD',
-            isSelected: selectedIndex == 1,
-            onTap: () => onChanged(1),
-          ),
-          _TopTabButton(
-            text: 'Data',
-            isSelected: selectedIndex == 2,
-            onTap: () => onChanged(2),
-          ),
-        ],
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(10), // ✅ same as container radius
+      child: Container(
+        height: 40,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          border: Border.all(color: const Color(0xFFB9C7D8)),
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Row(
+          children: [
+            _TopTabButton(
+              text: 'Summary', // (optional) fix spelling
+              isSelected: selectedIndex == 0,
+              isFirst: true,
+              isLast: false,
+              onTap: () => onChanged(0),
+            ),
+            _TopTabButton(
+              text: 'SLD',
+              isSelected: selectedIndex == 1,
+              isFirst: false,
+              isLast: false,
+              onTap: () => onChanged(1),
+            ),
+            _TopTabButton(
+              text: 'Data',
+              isSelected: selectedIndex == 2,
+              isFirst: false,
+              isLast: true,
+              onTap: () => onChanged(2),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -253,24 +316,36 @@ class _TopTabButton extends StatelessWidget {
     required this.text,
     required this.isSelected,
     required this.onTap,
+    required this.isFirst,
+    required this.isLast,
   });
 
   final String text;
   final bool isSelected;
   final VoidCallback onTap;
+  final bool isFirst;
+  final bool isLast;
 
   static const primary = Color(0xFF0B88F1);
 
   @override
   Widget build(BuildContext context) {
+    final radius = BorderRadius.only(
+      topLeft: isFirst ? const Radius.circular(10) : Radius.zero,
+      bottomLeft: isFirst ? const Radius.circular(10) : Radius.zero,
+      topRight: isLast ? const Radius.circular(10) : Radius.zero,
+      bottomRight: isLast ? const Radius.circular(10) : Radius.zero,
+    );
+
     return Expanded(
       child: InkWell(
         onTap: onTap,
-        child: Container(
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 180),
           alignment: Alignment.center,
           decoration: BoxDecoration(
             color: isSelected ? primary : Colors.transparent,
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: radius, // ✅ only edges are rounded
           ),
           child: Text(
             text,
@@ -285,6 +360,7 @@ class _TopTabButton extends StatelessWidget {
     );
   }
 }
+
 
 /* -------------------- Power Ring -------------------- */
 
@@ -412,7 +488,7 @@ class _SegmentTabs extends StatelessWidget {
   }
 }
 
-/* -------------------- List Container + Tiles -------------------- */
+/* -------------------- List Container -------------------- */
 
 class _ListContainer extends StatelessWidget {
   const _ListContainer({required this.child, required this.borderColor});
@@ -422,47 +498,22 @@ class _ListContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.fromLTRB(10, 10, 14, 10),
+      padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
       decoration: BoxDecoration(
         color: const Color(0xFFF7FBFF),
         borderRadius: BorderRadius.circular(10),
         border: Border.all(color: borderColor, width: 1),
       ),
-      child: Stack(
-        children: [
-          child,
-          Positioned(
-            right: 0,
-            top: 6,
-            bottom: 6,
-            child: Container(
-              width: 4,
-              decoration: BoxDecoration(
-                color: const Color(0xFFCBD7E6),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Align(
-                alignment: const Alignment(0, 0.15),
-                child: Container(
-                  width: 4,
-                  height: 46,
-                  decoration: BoxDecoration(
-                    color: const Color(0xFF0B88F1),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
+      child: child,
     );
   }
 }
 
+/* -------------------- Data Tile -------------------- */
+
 class _DataTile extends StatelessWidget {
   const _DataTile({
-    required this.icon,
+    required this.image,
     required this.title,
     required this.statusText,
     required this.statusColor,
@@ -471,7 +522,7 @@ class _DataTile extends StatelessWidget {
     this.onTap,
   });
 
-  final IconData icon;
+  final ImageProvider image;
   final String title;
   final String statusText;
   final Color statusColor;
@@ -487,7 +538,7 @@ class _DataTile extends StatelessWidget {
         borderRadius: BorderRadius.circular(8),
         onTap: onTap,
         child: Container(
-          padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+          padding: const EdgeInsets.all(10),
           decoration: BoxDecoration(
             color: const Color(0xFFEAF4FF),
             borderRadius: BorderRadius.circular(8),
@@ -503,11 +554,9 @@ class _DataTile extends StatelessWidget {
                   borderRadius: BorderRadius.circular(8),
                   border: Border.all(color: const Color(0xFFB9C7D8)),
                 ),
-                child: Image.asset(
-                  Assets.appLogo,
-                  width: 120,
-                  height: 120,
-                  fit: BoxFit.contain,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(8),
+                  child: Image(image: image, fit: BoxFit.contain),
                 ),
               ),
               const SizedBox(width: 10),
@@ -569,9 +618,9 @@ class _DataTile extends StatelessWidget {
 /* -------------------- Bottom Grid -------------------- */
 
 class _MenuItem {
-  const _MenuItem(this.title, this.icon);
+  const _MenuItem(this.title, this.iconAsset);
   final String title;
-  final IconData icon;
+  final String iconAsset;
 }
 
 class _BottomGrid extends StatelessWidget {
@@ -615,7 +664,10 @@ class _BottomGrid extends StatelessWidget {
                           borderRadius: BorderRadius.circular(8),
                           border: Border.all(color: const Color(0xFFB9C7D8)),
                         ),
-                        child: Icon(it.icon, size: 18, color: const Color(0xFF0B88F1)),
+                        child: Padding(
+                          padding: const EdgeInsets.all(6),
+                          child: Image.asset(it.iconAsset, fit: BoxFit.contain),
+                        ),
                       ),
                       const SizedBox(width: 10),
                       Expanded(

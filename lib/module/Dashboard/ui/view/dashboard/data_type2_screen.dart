@@ -1,321 +1,471 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
-class DataType2Screen extends StatefulWidget {
-  const DataType2Screen({super.key});
+class ScmScreen extends StatefulWidget {
+  const ScmScreen({super.key});
 
   @override
-  State<DataType2Screen> createState() => _DataType2ScreenState();
+  State<ScmScreen> createState() => _ScmScreenState();
 }
 
-class _DataType2ScreenState extends State<DataType2Screen> {
-  int topMode = 0; // 0 = Data View, 1 = Revenue View
-  int dateMode = 0; // 0 = Today Data, 1 = Custom Date Data
+class _ScmScreenState extends State<ScmScreen> {
+  int _tab = 0; // 0 Data, 1 Revenue
+  bool _customDate = false;
 
-  DateTime? fromDate;
-  DateTime? toDate;
+  DateTime? _from;
+  DateTime? _to;
 
-  bool revenueExpanded = true;
+  bool _revenueExpanded = true;
 
-  static const bg = Color(0xFFE6EDF7);
-  static const primary = Color(0xFF0B88F1);
-  static const border = Color(0xFFB9C7D8);
-  static const textDark = Color(0xFF0A2A3A);
+  // --- sample values (same as your screenshot) ---
+  final double _gaugeValueData = 55.00;
+  final double _gaugeValueDataCustom = 57.00;
+  final double _energyKwToday = 5.53;
+  final double _energyKwCustom = 20.05;
 
-  String _fmt(DateTime? d) {
-    if (d == null) return '';
-    return '${d.day.toString().padLeft(2, '0')}-'
-        '${d.month.toString().padLeft(2, '0')}-'
-        '${d.year}';
-  }
+  final int _revenueValue = 8897455;
 
-  Future<void> _pickFromDate() async {
-    final picked = await showDatePicker(
-      context: context,
-      initialDate: fromDate ?? DateTime.now(),
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2100),
-    );
-    if (picked != null) setState(() => fromDate = picked);
-  }
+  final _dataItemsToday = const [
+    _DataItem(label: "Data A", dot: Color(0xFF2F80ED), data: "2798.50 (29.53%)", cost: "35689 ৳"),
+    _DataItem(label: "Data B", dot: Color(0xFF6FCF97), data: "72598.50 (35.39%)", cost: "5259689 ৳"),
+    _DataItem(label: "Data C", dot: Color(0xFF9B51E0), data: "6598.36 (83.90%)", cost: "5698756 ৳"),
+    _DataItem(label: "Data D", dot: Color(0xFFF2994A), data: "6598.26 (36.59%)", cost: "356987 ৳"),
+  ];
 
-  Future<void> _pickToDate() async {
-    final picked = await showDatePicker(
-      context: context,
-      initialDate: toDate ?? (fromDate ?? DateTime.now()),
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2100),
-    );
-    if (picked != null) setState(() => toDate = picked);
-  }
+  final _dataItemsCustomTop = const [
+    _DataItem(label: "Data A", dot: Color(0xFF2F80ED), data: "2798.50 (29.53%)", cost: "35689 ৳"),
+    _DataItem(label: "Data B", dot: Color(0xFF6FCF97), data: "72598.50 (35.39%)", cost: "5259689 ৳"),
+    _DataItem(label: "Data C", dot: Color(0xFF9B51E0), data: "6598.36 (83.90%)", cost: "5698756 ৳"),
+    _DataItem(label: "Data D", dot: Color(0xFFF2994A), data: "6598.26 (36.59%)", cost: "356987 ৳"),
+  ];
 
-  void _onSearch() {
-    if (fromDate == null || toDate == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please select From Date and To Date')),
-      );
-      return;
-    }
-    if (toDate!.isBefore(fromDate!)) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('To Date must be after From Date')),
-      );
-      return;
-    }
+  final _dataItemsCustomBottom = const [
+    _DataItem(label: "Data A", dot: Color(0xFF2F80ED), data: "2798.50 (29.53%)", cost: "35689 ৳"),
+    _DataItem(label: "Data B", dot: Color(0xFF6FCF97), data: "72598.50 (35.39%)", cost: "5259689 ৳"),
+    _DataItem(label: "Data C", dot: Color(0xFF9B51E0), data: "6598.36 (83.90%)", cost: "5698756 ৳"),
+    _DataItem(label: "Data D", dot: Color(0xFFF2994A), data: "6598.26 (36.59%)", cost: "356987 ৳"),
+  ];
 
-    // TODO: call API using fromDate & toDate
-    setState(() {});
-  }
+  final _revenueLines = const [
+    _KVLine(k: "Data 1", v: "2798.50 (29.53%)"),
+    _KVLine(k: "Cost 1", v: "35689 ৳"),
+    _KVLine(k: "Data 2", v: "2798.50 (29.53%)"),
+    _KVLine(k: "Cost 2", v: "35689 ৳"),
+    _KVLine(k: "Data 3", v: "2798.50 (29.53%)"),
+    _KVLine(k: "Cost 3", v: "35689 ৳"),
+    _KVLine(k: "Data 4", v: "2798.50 (29.53%)"),
+    _KVLine(k: "Cost 4", v: "35689 ৳"),
+  ];
 
   @override
   Widget build(BuildContext context) {
-    final bool showCustomUI = (topMode == 0 && dateMode == 1); // Data View + Custom Date
-    final bool isRevenue = topMode == 1;
+    final s = MediaQuery.of(context).size.width / 375.0;
 
     return Scaffold(
-      backgroundColor: bg,
+      backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
-        elevation: 0.5,
-        leading: IconButton(
-          onPressed: () => Navigator.maybePop(context),
-          icon: const Icon(Icons.arrow_back_ios_new, color: Colors.black87, size: 18),
-        ),
-        title: const Text(
-          'SCM',
-          style: TextStyle(color: textDark, fontWeight: FontWeight.w800, fontSize: 16),
-        ),
+        elevation: 0,
         centerTitle: true,
+        title: const Text(
+          "SCM",
+          style: TextStyle(
+            color: Color(0xFF1F2A44),
+            fontWeight: FontWeight.w700,
+            letterSpacing: 0.2,
+          ),
+        ),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios_new_rounded, color: Color(0xFF1F2A44)),
+          onPressed: () {},
+        ),
         actions: [
           Padding(
-            padding: const EdgeInsets.only(right: 12),
+            padding: const EdgeInsets.only(right: 10),
             child: Stack(
-              alignment: Alignment.topRight,
+              clipBehavior: Clip.none,
               children: [
                 IconButton(
+                  icon: const Icon(Icons.notifications_none_rounded, color: Color(0xFF1F2A44)),
                   onPressed: () {},
-                  icon: const Icon(Icons.notifications_none, color: Colors.black87),
                 ),
                 Positioned(
                   right: 10,
-                  top: 10,
+                  top: 11,
                   child: Container(
-                    width: 9,
-                    height: 9,
-                    decoration: const BoxDecoration(color: Colors.red, shape: BoxShape.circle),
+                    width: 8,
+                    height: 8,
+                    decoration: const BoxDecoration(color: Color(0xFFEB5757), shape: BoxShape.circle),
                   ),
-                )
+                ),
               ],
             ),
-          )
+          ),
         ],
       ),
       body: SafeArea(
-        child: Center(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.fromLTRB(14, 14, 14, 18),
-            child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 420),
-              child: Container(
-                padding: const EdgeInsets.fromLTRB(14, 14, 14, 16),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(18),
-                  border: Border.all(color: border, width: 1),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.05),
-                      blurRadius: 16,
-                      offset: const Offset(0, 10),
-                    )
-                  ],
-                ),
+        child: Column(
+          children: [
+            _HeaderTop(
+              scale: s,
+              tab: _tab,
+              onTab: (v) => setState(() => _tab = v),
+            ),
+
+            Expanded(
+              child: SingleChildScrollView(
+                padding: EdgeInsets.fromLTRB(16 * s, 0, 16 * s, 16 * s),
                 child: Column(
-                  mainAxisSize: MainAxisSize.min,
                   children: [
-                    _TopModePill(
-                      selected: topMode,
-                      onChanged: (i) => setState(() => topMode = i),
+                    // ---- Gauge (NO card container – matches screenshot) ----
+                    _GaugeOnly(
+                      scale: s,
+                      valueText: _tab == 0
+                          ? (_customDate ? _gaugeValueDataCustom.toStringAsFixed(2) : _gaugeValueData.toStringAsFixed(2))
+                          : _revenueValue.toString(),
+                      unitText: _tab == 0 ? "kWh/Sqft" : "tk",
+                      progress: 0.62,
                     ),
-                    const SizedBox(height: 18),
 
-                    // Gauge
-                    _ArcGauge(
-                      value: isRevenue ? 0.72 : (showCustomUI ? 0.57 : 0.55),
-                      centerTopText: isRevenue ? '8897455' : (showCustomUI ? '57.00' : '55.00'),
-                      centerBottomText: isRevenue ? 'tk' : 'kWh/Sqft',
-                    ),
-                    const SizedBox(height: 10),
+                    SizedBox(height: 8 * s),
 
-                    // ✅ Data View only: Today/Custom
-                    if (!isRevenue) ...[
-                      _SmallRadioRow(
-                        selected: dateMode,
-                        onChanged: (i) => setState(() => dateMode = i),
+                    if (_tab == 0) ...[
+                      _TodayCustomRow(
+                        scale: s,
+                        custom: _customDate,
+                        onToday: () => setState(() => _customDate = false),
+                        onCustom: () => setState(() => _customDate = true),
                       ),
-                      const SizedBox(height: 14),
 
-                      if (showCustomUI) ...[
-                        _DateRangeBar(
-                          fromText: _fmt(fromDate),
-                          toText: _fmt(toDate),
-                          onPickFrom: _pickFromDate,
-                          onPickTo: _pickToDate,
-                          onSearch: _onSearch,
+                      SizedBox(height: 8 * s),
+
+                      if (_customDate) ...[
+                        _DateRangeRow(
+                          scale: s,
+                          from: _from,
+                          to: _to,
+                          onPickFrom: () async {
+                            final d = await showDatePicker(
+                              context: context,
+                              initialDate: _from ?? DateTime.now(),
+                              firstDate: DateTime(2000),
+                              lastDate: DateTime(2100),
+                            );
+                            if (d != null) setState(() => _from = d);
+                          },
+                          onPickTo: () async {
+                            final d = await showDatePicker(
+                              context: context,
+                              initialDate: _to ?? DateTime.now(),
+                              firstDate: DateTime(2000),
+                              lastDate: DateTime(2100),
+                            );
+                            if (d != null) setState(() => _to = d);
+                          },
+                          onSearch: () {},
                         ),
-                        const SizedBox(height: 12),
+                        SizedBox(height: 10 * s),
                       ],
 
-                      // Energy cards
-                      if (showCustomUI) ...[
-                        _EnergyChartCard(
-                          totalKwText: '20.05 kw',
-                          rows: const [
-                            _RowData(dotColor: Color(0xFF0B88F1), label: 'Data A', dataText: '2798.50 (29.53%)', costText: '35689 ৳'),
-                            _RowData(dotColor: Color(0xFF8CC6FF), label: 'Data B', dataText: '72598.50 (35.39%)', costText: '5259689 ৳'),
-                            _RowData(dotColor: Color(0xFF8B5CF6), label: 'Data C', dataText: '6598.36 (83.90%)', costText: '5698756 ৳'),
-                            _RowData(dotColor: Color(0xFFFFB020), label: 'Data D', dataText: '6598.26 (36.59%)', costText: '356987 ৳'),
-                          ],
-                        ),
-                        const SizedBox(height: 12),
-                        _EnergyChartCard(
-                          totalKwText: '5.53 kw',
-                          rows: const [
-                            _RowData(dotColor: Color(0xFF0B88F1), label: 'Data A', dataText: '2798.50 (29.53%)', costText: '35689 ৳'),
-                            _RowData(dotColor: Color(0xFF8CC6FF), label: 'Data B', dataText: '72598.50 (35.39%)', costText: '5259689 ৳'),
-                            _RowData(dotColor: Color(0xFF8B5CF6), label: 'Data C', dataText: '6598.36 (83.90%)', costText: '5698756 ৳'),
-                            _RowData(dotColor: Color(0xFFFFB020), label: 'Data D', dataText: '6598.26 (36.59%)', costText: '356987 ৳'),
-                          ],
-                        ),
-                      ] else ...[
-                        _EnergyChartCard(
-                          totalKwText: '5.53 kw',
-                          rows: const [
-                            _RowData(dotColor: Color(0xFF0B88F1), label: 'Data A', dataText: '2798.50 (29.53%)', costText: '35689 ৳'),
-                            _RowData(dotColor: Color(0xFF8CC6FF), label: 'Data B', dataText: '72598.50 (35.39%)', costText: '5259689 ৳'),
-                            _RowData(dotColor: Color(0xFF8B5CF6), label: 'Data C', dataText: '6598.36 (83.90%)', costText: '5698756 ৳'),
-                            _RowData(dotColor: Color(0xFFFFB020), label: 'Data D', dataText: '6598.26 (36.59%)', costText: '356987 ৳'),
-                          ],
+                      _EnergyCardExact(
+                        scale: s,
+                        energyKw: _customDate ? _energyKwCustom : _energyKwToday,
+                        items: _customDate ? _dataItemsCustomTop : _dataItemsToday,
+                      ),
+
+                      if (_customDate) ...[
+                        SizedBox(height: 12 * s),
+                        _EnergyCardExact(
+                          scale: s,
+                          energyKw: _energyKwToday,
+                          items: _dataItemsCustomBottom,
                         ),
                       ],
-                    ],
-
-                    // ✅ Revenue View UI (your screenshot)
-                    if (isRevenue) ...[
-                      const SizedBox(height: 10),
-                      _CollapsibleInfoCard(
-                        title: 'Data & Cost Info',
-                        expanded: revenueExpanded,
-                        onToggle: () => setState(() => revenueExpanded = !revenueExpanded),
-                        children: const [
-                          _InfoLine(index: 1, data: '2798.50 (29.53%)', cost: '35689 ৳'),
-                          _InfoLine(index: 2, data: '2798.50 (29.53%)', cost: '35689 ৳'),
-                          _InfoLine(index: 3, data: '2798.50 (29.53%)', cost: '35689 ৳'),
-                          _InfoLine(index: 4, data: '2798.50 (29.53%)', cost: '35689 ৳'),
-                        ],
+                    ] else ...[
+                      SizedBox(height: 12 * s),
+                      _RevenuePanelExact(
+                        scale: s,
+                        expanded: _revenueExpanded,
+                        onToggle: () => setState(() => _revenueExpanded = !_revenueExpanded),
+                        lines: _revenueLines,
                       ),
-                      const SizedBox(height: 6),
                     ],
                   ],
                 ),
               ),
             ),
-          ),
+          ],
         ),
       ),
     );
   }
 }
 
-/* ------------------ Top pill: Data View / Revenue View ------------------ */
+// ============================ HEADER (curved white sheet) ============================
 
-class _TopModePill extends StatelessWidget {
-  const _TopModePill({required this.selected, required this.onChanged});
-  final int selected;
-  final ValueChanged<int> onChanged;
+class _HeaderTop extends StatelessWidget {
+  final double scale;
+  final int tab;
+  final ValueChanged<int> onTab;
 
-  static const border = Color(0xFFB9C7D8);
-  static const primary = Color(0xFF0B88F1);
+  const _HeaderTop({required this.scale, required this.tab, required this.onTab});
 
   @override
   Widget build(BuildContext context) {
+    final s = scale;
+
+    return SizedBox(
+      height: 78 * s,
+      child: Stack(
+        children: [
+          // light blue bar
+          Container(
+            height: 46 * s,
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [Color(0xFFD7E1F0), Color(0xFFEEF3FB)],
+              ),
+            ),
+          ),
+
+
+          Positioned(
+            left: 0,
+            right: 0,
+            top: 38 * s,
+            child: Container(
+              height: 64 * s,
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(22),
+                  topRight: Radius.circular(22),
+                ),
+              ),
+            ),
+          ),
+
+
+
+          // SEGMENTED TABS (FULL WIDTH INSIDE SHEET)
+          Positioned(
+            left: 16 * s,
+            right: 16 * s,
+            bottom: 20 * s,
+            child: Container(
+              height: 42 * s,
+              padding: EdgeInsets.all(3 * s),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(12 * s),
+                border: Border.all(color: const Color(0xFFCCD5E6)),
+              ),
+              child: _SegmentTabsRadio(
+                scale: s,
+                value: tab,
+                onChanged: onTab,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+
+
+class _HeaderClipper extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    // Creates the side “ears” like your screenshot
+    final w = size.width;
+    final h = size.height;
+
+    final p = Path();
+    p.moveTo(0, 18);
+    p.quadraticBezierTo(0, 0, 18, 0);
+    p.lineTo(w - 18, 0);
+    p.quadraticBezierTo(w, 0, w, 18);
+
+    // down right side
+    p.lineTo(w, h);
+    p.lineTo(0, h);
+    p.close();
+    return p;
+  }
+
+  @override
+  bool shouldReclip(covariant CustomClipper<Path> oldClipper) => false;
+}
+
+// ============================ SEGMENT TABS (radio style) ============================
+
+class _SegmentTabsRadio extends StatelessWidget {
+  final double scale;
+  final int value;
+  final ValueChanged<int> onChanged;
+
+  const _SegmentTabsRadio({required this.scale, required this.value, required this.onChanged});
+
+  @override
+  Widget build(BuildContext context) {
+    final s = scale;
     return Container(
-      height: 40,
+      height: 42 * s,
+      padding: EdgeInsets.all(3 * s),
       decoration: BoxDecoration(
-        color: const Color(0xFFF3F7FF),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: border, width: 1),
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12 * s),
+        // border: Border.all(color: const Color(0xFFCCD5E6)),
       ),
       child: Row(
         children: [
           Expanded(
-            child: InkWell(
+            child: _SegBtn(
+              scale: s,
+              selected: value == 0,
+              label: "Data View",
               onTap: () => onChanged(0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  _RadioDot(isOn: selected == 0),
-                  const SizedBox(width: 8),
-                  Text(
-                    'Data View',
-                    style: TextStyle(
-                      color: selected == 0 ? primary : Colors.grey.shade600,
-                      fontWeight: FontWeight.w800,
-                      fontSize: 13,
-                    ),
-                  ),
-                ],
-              ),
             ),
           ),
+          SizedBox(width: 6 * s),
           Expanded(
-            child: InkWell(
+            child: _SegBtn(
+              scale: s,
+              selected: value == 1,
+              label: "Revenue View",
               onTap: () => onChanged(1),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  _RadioDot(isOn: selected == 1),
-                  const SizedBox(width: 8),
-                  Text(
-                    'Revenue View',
-                    style: TextStyle(
-                      color: selected == 1 ? primary : Colors.grey.shade600,
-                      fontWeight: FontWeight.w800,
-                      fontSize: 13,
-                    ),
-                  ),
-                ],
-              ),
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class _SegBtn extends StatelessWidget {
+  final double scale;
+  final bool selected;
+  final String label;
+  final VoidCallback onTap;
+
+  const _SegBtn({required this.scale, required this.selected, required this.label, required this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    final s = scale;
+    final textColor = selected ? const Color(0xFF2F80ED) : const Color(0xFF7A869A);
+
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(8 * s),
+      child: Container(
+        height: 36 * s,
+        decoration: BoxDecoration(
+          color: Colors.transparent,
+          borderRadius: BorderRadius.circular(8 * s),
+        ),
+        padding: EdgeInsets.symmetric(horizontal: 10 * s),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            _RadioDot(scale: s, selected: selected),
+            SizedBox(width: 8 * s),
+            Text(
+              label,
+              style: TextStyle(fontSize: 13 * s, fontWeight: FontWeight.w800, color: textColor),
+            ),
+          ],
+        ),
       ),
     );
   }
 }
 
 class _RadioDot extends StatelessWidget {
-  const _RadioDot({required this.isOn});
-  final bool isOn;
+  final double scale;
+  final bool selected;
 
-  static const primary = Color(0xFF0B88F1);
+  const _RadioDot({required this.scale, required this.selected});
 
   @override
   Widget build(BuildContext context) {
+    final s = scale;
+    if (selected) {
+      return Container(
+        width: 14 * s,
+        height: 14 * s,
+        decoration: const BoxDecoration(color: Color(0xFF2F80ED), shape: BoxShape.circle),
+        child: Center(
+          child: Container(
+            width: 6 * s,
+            height: 6 * s,
+            decoration: const BoxDecoration(color: Colors.white, shape: BoxShape.circle),
+          ),
+        ),
+      );
+    }
     return Container(
-      width: 14,
-      height: 14,
+      width: 14 * s,
+      height: 14 * s,
       decoration: BoxDecoration(
+        color: Colors.white,
         shape: BoxShape.circle,
-        border: Border.all(color: isOn ? primary : const Color(0xFF9AA8B7), width: 1.6),
+        border: Border.all(color: const Color(0xFFB0B9CC), width: 2 * s),
       ),
+    );
+  }
+}
+
+// ============================ GAUGE (no card container) ============================
+
+class _GaugeOnly extends StatelessWidget {
+  final double scale;
+  final String valueText;
+  final String unitText;
+  final double progress;
+
+  const _GaugeOnly({
+    required this.scale,
+    required this.valueText,
+    required this.unitText,
+    required this.progress,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final s = scale;
+    return SizedBox(
+      height: 160 * s,
       child: Center(
-        child: Container(
-          width: 7,
-          height: 7,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: isOn ? primary : Colors.transparent,
+        child: CustomPaint(
+          size: Size(170 * s, 170 * s),
+          painter: _GaugePainter(progress: progress),
+          child: SizedBox(
+            width: 170 * s,
+            height: 170 * s,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  valueText,
+                  style: TextStyle(
+                    fontSize: 18 * s,
+                    fontWeight: FontWeight.w900,
+                    color: const Color(0xFF1F2A44),
+                  ),
+                ),
+                SizedBox(height: 2 * s),
+                Text(
+                  unitText,
+                  style: TextStyle(fontSize: 12 * s, fontWeight: FontWeight.w600, color: const Color(0xFF1F2A44)),
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -323,218 +473,155 @@ class _RadioDot extends StatelessWidget {
   }
 }
 
-/* ------------------ Arc Gauge ------------------ */
-
-class _ArcGauge extends StatelessWidget {
-  const _ArcGauge({
-    required this.value,
-    required this.centerTopText,
-    required this.centerBottomText,
-  });
-
-  final double value; // 0..1
-  final String centerTopText;
-  final String centerBottomText;
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: 190,
-      height: 150,
-      child: Stack(
-        alignment: Alignment.center,
-        children: [
-          CustomPaint(
-            size: const Size(190, 150),
-            painter: _ArcGaugePainter(value: value),
-          ),
-          Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                centerTopText,
-                style: const TextStyle(
-                  color: Color(0xFF0A2A3A),
-                  fontWeight: FontWeight.w900,
-                  fontSize: 16,
-                ),
-              ),
-              const SizedBox(height: 2),
-              Text(
-                centerBottomText,
-                style: const TextStyle(
-                  color: Color(0xFF0A2A3A),
-                  fontWeight: FontWeight.w700,
-                  fontSize: 11,
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _ArcGaugePainter extends CustomPainter {
-  _ArcGaugePainter({required this.value});
-  final double value;
-
-  static const primary = Color(0xFF3B82F6);
-  static const bgArc = Color(0xFFD7EBFF);
+class _GaugePainter extends CustomPainter {
+  final double progress;
+  _GaugePainter({required this.progress});
 
   @override
   void paint(Canvas canvas, Size size) {
-    final stroke = 14.0;
-    final center = Offset(size.width / 2, size.height / 2 + 10);
-    final radius = math.min(size.width, size.height) / 2 - stroke;
+    final center = Offset(size.width / 2, size.height / 2);
+    final radius = size.width * 0.38;
 
-    final start = 0.75 * math.pi;
-    final sweepTotal = 1.5 * math.pi;
-
-    final rect = Rect.fromCircle(center: center, radius: radius);
-
-    final pBg = Paint()
-      ..color = bgArc
+    final base = Paint()
+      ..color = const Color(0xFFDCEBFF)
+      ..strokeWidth = size.width * 0.07
       ..style = PaintingStyle.stroke
-      ..strokeWidth = stroke
       ..strokeCap = StrokeCap.round;
 
-    final pFg = Paint()
-      ..color = primary
+    final active = Paint()
+      ..color = const Color(0xFF2F80ED)
+      ..strokeWidth = size.width * 0.07
       ..style = PaintingStyle.stroke
-      ..strokeWidth = stroke
       ..strokeCap = StrokeCap.round;
 
-    canvas.drawArc(rect, start, sweepTotal, false, pBg);
-    canvas.drawArc(rect, start, sweepTotal * value.clamp(0, 1), false, pFg);
+    const start = math.pi; // left
+    const sweepTotal = math.pi;
+
+    canvas.drawArc(Rect.fromCircle(center: center, radius: radius), start, sweepTotal, false, base);
+    canvas.drawArc(
+      Rect.fromCircle(center: center, radius: radius),
+      start,
+      sweepTotal * progress.clamp(0.0, 1.0),
+      false,
+      active,
+    );
   }
 
   @override
-  bool shouldRepaint(covariant _ArcGaugePainter oldDelegate) => oldDelegate.value != value;
+  bool shouldRepaint(covariant _GaugePainter oldDelegate) => oldDelegate.progress != progress;
 }
 
-/* ------------------ Today / Custom Radio Row ------------------ */
+// ============================ TODAY / CUSTOM RADIO ============================
 
-class _SmallRadioRow extends StatelessWidget {
-  const _SmallRadioRow({required this.selected, required this.onChanged});
-  final int selected;
-  final ValueChanged<int> onChanged;
+class _TodayCustomRow extends StatelessWidget {
+  final double scale;
+  final bool custom;
+  final VoidCallback onToday;
+  final VoidCallback onCustom;
 
-  static const primary = Color(0xFF0B88F1);
+  const _TodayCustomRow({
+    required this.scale,
+    required this.custom,
+    required this.onToday,
+    required this.onCustom,
+  });
 
   @override
   Widget build(BuildContext context) {
+    final s = scale;
+
+    Widget item(bool selected, String text, VoidCallback onTap) {
+      return InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(10 * s),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              width: 12 * s,
+              height: 12 * s,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: selected ? const Color(0xFF2F80ED) : const Color(0xFF4B5565),
+              ),
+            ),
+            SizedBox(width: 8 * s),
+            Text(
+              text,
+              style: TextStyle(
+                fontSize: 12.5 * s,
+                fontWeight: FontWeight.w800,
+                color: selected ? const Color(0xFF2F80ED) : const Color(0xFF4B5565),
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        InkWell(
-          onTap: () => onChanged(0),
-          child: Row(
-            children: [
-              _MiniDot(isOn: selected == 0),
-              const SizedBox(width: 6),
-              Text(
-                'Today Data',
-                style: TextStyle(
-                  color: selected == 0 ? primary : Colors.grey.shade700,
-                  fontWeight: FontWeight.w800,
-                  fontSize: 12,
-                ),
-              ),
-            ],
-          ),
-        ),
-        const SizedBox(width: 18),
-        InkWell(
-          onTap: () => onChanged(1),
-          child: Row(
-            children: [
-              _MiniDot(isOn: selected == 1),
-              const SizedBox(width: 6),
-              Text(
-                'Custom Date Data',
-                style: TextStyle(
-                  color: selected == 1 ? primary : Colors.grey.shade700,
-                  fontWeight: FontWeight.w800,
-                  fontSize: 12,
-                ),
-              ),
-            ],
-          ),
-        ),
+        item(!custom, "Today Data", onToday),
+        SizedBox(width: 18 * s),
+        item(custom, "Custom Date Data", onCustom),
       ],
     );
   }
 }
 
-class _MiniDot extends StatelessWidget {
-  const _MiniDot({required this.isOn});
-  final bool isOn;
+// ============================ DATE RANGE ROW ============================
 
-  static const primary = Color(0xFF0B88F1);
+class _DateRangeRow extends StatelessWidget {
+  final double scale;
+  final DateTime? from;
+  final DateTime? to;
+  final VoidCallback onPickFrom;
+  final VoidCallback onPickTo;
+  final VoidCallback onSearch;
 
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 10,
-      height: 10,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        color: isOn ? primary : const Color(0xFF9AA8B7),
-      ),
-    );
-  }
-}
-
-/* ------------------ Date range row ------------------ */
-
-class _DateRangeBar extends StatelessWidget {
-  const _DateRangeBar({
-    required this.fromText,
-    required this.toText,
+  const _DateRangeRow({
+    required this.scale,
+    required this.from,
+    required this.to,
     required this.onPickFrom,
     required this.onPickTo,
     required this.onSearch,
   });
 
-  final String fromText;
-  final String toText;
-  final VoidCallback onPickFrom;
-  final VoidCallback onPickTo;
-  final VoidCallback onSearch;
-
-  static const border = Color(0xFFB9C7D8);
-  static const primary = Color(0xFF0B88F1);
+  String _fmt(DateTime? d) => d == null ? "" : DateFormat("dd/MM/yyyy").format(d);
 
   @override
   Widget build(BuildContext context) {
-    Widget box({required String hint, required String value, required VoidCallback onTap}) {
+    final s = scale;
+
+    Widget field(String hint, String value, VoidCallback onTap) {
       return Expanded(
         child: InkWell(
           onTap: onTap,
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.circular(6 * s),
           child: Container(
-            height: 40,
-            padding: const EdgeInsets.symmetric(horizontal: 10),
+            height: 32 * s,
+            padding: EdgeInsets.symmetric(horizontal: 10 * s),
             decoration: BoxDecoration(
               color: Colors.white,
-              borderRadius: BorderRadius.circular(10),
-              border: Border.all(color: border),
+              borderRadius: BorderRadius.circular(6 * s),
+              border: Border.all(color: const Color(0xFFBFC9DA)),
             ),
             child: Row(
               children: [
                 Expanded(
                   child: Text(
                     value.isEmpty ? hint : value,
+                    overflow: TextOverflow.ellipsis,
                     style: TextStyle(
-                      fontSize: 12,
+                      fontSize: 11.5 * s,
                       fontWeight: FontWeight.w700,
-                      color: value.isEmpty ? Colors.grey.shade500 : const Color(0xFF0A2A3A),
+                      color: value.isEmpty ? const Color(0xFF8A95A6) : const Color(0xFF1F2A44),
                     ),
                   ),
                 ),
-                const Icon(Icons.calendar_month_outlined, size: 18, color: Color(0xFF6B7C8B)),
+                Icon(Icons.calendar_month_rounded, size: 16 * s, color: const Color(0xFF6B778C)),
               ],
             ),
           ),
@@ -544,22 +631,22 @@ class _DateRangeBar extends StatelessWidget {
 
     return Row(
       children: [
-        box(hint: 'From Date', value: fromText, onTap: onPickFrom),
-        const SizedBox(width: 10),
-        box(hint: 'To Date', value: toText, onTap: onPickTo),
-        const SizedBox(width: 10),
+        field("From Date", _fmt(from), onPickFrom),
+        SizedBox(width: 10 * s),
+        field("To Date", _fmt(to), onPickTo),
+        SizedBox(width: 10 * s),
         InkWell(
           onTap: onSearch,
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.circular(6 * s),
           child: Container(
-            height: 40,
-            width: 40,
+            width: 32 * s,
+            height: 32 * s,
             decoration: BoxDecoration(
               color: Colors.white,
-              borderRadius: BorderRadius.circular(10),
-              border: Border.all(color: border),
+              borderRadius: BorderRadius.circular(6 * s),
+              border: Border.all(color: const Color(0xFF2F80ED), width: 1.2),
             ),
-            child: const Icon(Icons.search, color: primary),
+            child: Icon(Icons.search_rounded, size: 18 * s, color: const Color(0xFF2F80ED)),
           ),
         ),
       ],
@@ -567,76 +654,49 @@ class _DateRangeBar extends StatelessWidget {
   }
 }
 
-/* ------------------ Energy Chart Card (reusable) ------------------ */
+// ============================ ENERGY CARD (exact style) ============================
 
-class _RowData {
-  const _RowData({
-    required this.dotColor,
-    required this.label,
-    required this.dataText,
-    required this.costText,
+class _EnergyCardExact extends StatelessWidget {
+  final double scale;
+  final double energyKw;
+  final List<_DataItem> items;
+
+  const _EnergyCardExact({
+    required this.scale,
+    required this.energyKw,
+    required this.items,
   });
-
-  final Color dotColor;
-  final String label;
-  final String dataText;
-  final String costText;
-}
-
-class _EnergyChartCard extends StatelessWidget {
-  const _EnergyChartCard({
-    required this.totalKwText,
-    required this.rows,
-  });
-
-  final String totalKwText;
-  final List<_RowData> rows;
-
-  static const border = Color(0xFFB9C7D8);
-  static const textDark = Color(0xFF0A2A3A);
 
   @override
   Widget build(BuildContext context) {
+    final s = scale;
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.fromLTRB(12, 12, 12, 12),
+      padding: EdgeInsets.fromLTRB(12 * s, 10 * s, 12 * s, 10 * s),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: border, width: 1),
+        borderRadius: BorderRadius.circular(10 * s),
+        border: Border.all(color: const Color(0xFFBFC9DA)),
       ),
       child: Column(
         children: [
           Row(
             children: [
-              const Text(
-                'Energy Chart',
-                style: TextStyle(
-                  color: textDark,
-                  fontWeight: FontWeight.w800,
-                  fontSize: 12,
-                ),
+              Text(
+                "Energy Chart",
+                style: TextStyle(fontSize: 12 * s, fontWeight: FontWeight.w800, color: const Color(0xFF1F2A44)),
               ),
               const Spacer(),
               Text(
-                totalKwText,
-                style: const TextStyle(
-                  color: textDark,
-                  fontWeight: FontWeight.w900,
-                  fontSize: 26,
-                ),
+                "${energyKw.toStringAsFixed(2)} kw",
+                style: TextStyle(fontSize: 22 * s, fontWeight: FontWeight.w900, color: const Color(0xFF0D164A)),
               ),
             ],
           ),
-          const SizedBox(height: 10),
-          for (int i = 0; i < rows.length; i++) ...[
-            _DataRowTile(
-              dotColor: rows[i].dotColor,
-              label: rows[i].label,
-              dataText: rows[i].dataText,
-              costText: rows[i].costText,
-            ),
-            if (i != rows.length - 1) const SizedBox(height: 8),
+          SizedBox(height: 10 * s),
+          for (int i = 0; i < items.length; i++) ...[
+            _EnergyRowExact(scale: s, item: items[i]),
+            if (i != items.length - 1) SizedBox(height: 8 * s),
           ],
         ],
       ),
@@ -644,74 +704,88 @@ class _EnergyChartCard extends StatelessWidget {
   }
 }
 
-class _DataRowTile extends StatelessWidget {
-  const _DataRowTile({
-    required this.dotColor,
-    required this.label,
-    required this.dataText,
-    required this.costText,
-  });
+class _EnergyRowExact extends StatelessWidget {
+  final double scale;
+  final _DataItem item;
 
-  final Color dotColor;
-  final String label;
-  final String dataText;
-  final String costText;
-
-  static const border = Color(0xFFB9C7D8);
-  static const textDark = Color(0xFF0A2A3A);
+  const _EnergyRowExact({required this.scale, required this.item});
 
   @override
   Widget build(BuildContext context) {
+    final s = scale;
+
     return Container(
-      padding: const EdgeInsets.fromLTRB(10, 8, 10, 8),
+      padding: EdgeInsets.symmetric(horizontal: 10 * s, vertical: 8 * s),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: border, width: 1),
+        borderRadius: BorderRadius.circular(6 * s),
+        border: Border.all(color: const Color(0xFFBFC9DA)),
       ),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
+          // LEFT FIXED BLOCK (dot top + label bottom)
           SizedBox(
-            width: 56,
-            child: Row(
+            width: 56 * s,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
               children: [
-                Container(width: 8, height: 8, decoration: BoxDecoration(color: dotColor, shape: BoxShape.circle)),
-                const SizedBox(width: 8),
-                Flexible(
-                  child: Text(
-                    label,
-                    style: const TextStyle(
-                      color: textDark,
-                      fontWeight: FontWeight.w900,
-                      fontSize: 11,
-                    ),
+                Container(
+                  width: 8 * s,
+                  height: 8 * s,
+                  decoration: BoxDecoration(color: item.dot, shape: BoxShape.circle),
+                ),
+                SizedBox(height: 4 * s),
+                Text(
+                  item.label,
+                  style: TextStyle(
+                    fontSize: 12 * s,
+                    fontWeight: FontWeight.w900,
+                    color: const Color(0xFF0D164A),
                   ),
                 ),
               ],
             ),
           ),
-          Container(width: 1, height: 34, color: border.withOpacity(0.9)),
-          const SizedBox(width: 10),
+
+          // VERTICAL DIVIDER (exact like screenshot)
+          Container(
+            width: 1,
+            height: 34 * s,
+            margin: EdgeInsets.symmetric(horizontal: 10 * s),
+            color: const Color(0xFFBFC9DA),
+          ),
+
+          // RIGHT CONTENT
           Expanded(
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  'Data   :   $dataText',
-                  style: const TextStyle(
-                    color: textDark,
-                    fontWeight: FontWeight.w700,
-                    fontSize: 11,
-                  ),
+                Row(
+                  children: [
+                    Text("Data", style: TextStyle(fontSize: 11 * s, fontWeight: FontWeight.w600, color: const Color(0xFF7A869A))),
+                    Text("  :  ", style: TextStyle(fontSize: 11 * s, fontWeight: FontWeight.w700, color: const Color(0xFF7A869A))),
+                    Expanded(
+                      child: Text(
+                        item.data,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(fontSize: 11 * s, fontWeight: FontWeight.w900, color: const Color(0xFF0D164A)),
+                      ),
+                    ),
+                  ],
                 ),
-                const SizedBox(height: 4),
-                Text(
-                  'Cost   :   $costText',
-                  style: const TextStyle(
-                    color: textDark,
-                    fontWeight: FontWeight.w700,
-                    fontSize: 11,
-                  ),
+                SizedBox(height: 4 * s),
+                Row(
+                  children: [
+                    Text("Cost", style: TextStyle(fontSize: 11 * s, fontWeight: FontWeight.w600, color: const Color(0xFF7A869A))),
+                    Text("  :  ", style: TextStyle(fontSize: 11 * s, fontWeight: FontWeight.w700, color: const Color(0xFF7A869A))),
+                    Expanded(
+                      child: Text(
+                        item.cost,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(fontSize: 11 * s, fontWeight: FontWeight.w900, color: const Color(0xFF0D164A)),
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
@@ -722,128 +796,119 @@ class _DataRowTile extends StatelessWidget {
   }
 }
 
-/* ------------------ Revenue collapsible panel ------------------ */
 
-class _CollapsibleInfoCard extends StatelessWidget {
-  const _CollapsibleInfoCard({
-    required this.title,
-    required this.expanded,
-    required this.onToggle,
-    required this.children,
-  });
+// ============================ REVENUE PANEL (exact toggle) ============================
 
-  final String title;
+class _RevenuePanelExact extends StatelessWidget {
+  final double scale;
   final bool expanded;
   final VoidCallback onToggle;
-  final List<Widget> children;
+  final List<_KVLine> lines;
 
-  static const border = Color(0xFFB9C7D8);
-  static const primary = Color(0xFF0B88F1);
-  static const textDark = Color(0xFF0A2A3A);
+  const _RevenuePanelExact({
+    required this.scale,
+    required this.expanded,
+    required this.onToggle,
+    required this.lines,
+  });
 
   @override
   Widget build(BuildContext context) {
+    final s = scale;
+
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: border),
+        borderRadius: BorderRadius.circular(10 * s),
+        border: Border.all(color: const Color(0xFFBFC9DA)),
       ),
       child: Column(
         children: [
           InkWell(
             onTap: onToggle,
-            borderRadius: BorderRadius.circular(12),
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
+              padding: EdgeInsets.symmetric(horizontal: 12 * s, vertical: 10 * s),
               child: Row(
                 children: [
-                  const Icon(Icons.bar_chart, size: 18, color: Color(0xFF5B6B7B)),
-                  const SizedBox(width: 8),
+                  Icon(Icons.bar_chart_rounded, size: 18 * s, color: const Color(0xFF2F80ED)),
+                  SizedBox(width: 10 * s),
                   Text(
-                    title,
-                    style: const TextStyle(
-                      color: textDark,
-                      fontWeight: FontWeight.w900,
-                      fontSize: 12,
-                    ),
+                    "Data & Cost Info",
+                    style: TextStyle(fontSize: 12.5 * s, fontWeight: FontWeight.w900, color: const Color(0xFF0D164A)),
                   ),
                   const Spacer(),
+
+                  // BLUE FILLED CIRCLE (matches your screenshot)
                   Container(
-                    width: 26,
-                    height: 26,
-                    decoration: const BoxDecoration(color: primary, shape: BoxShape.circle),
-                    child: Icon(
-                      expanded ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
-                      color: Colors.white,
-                      size: 18,
+                    width: 30 * s,
+                    height: 30 * s,
+                    decoration: const BoxDecoration(
+                      color: Color(0xFF2F80ED),
+                      shape: BoxShape.circle,
+                    ),
+                    child: Center(
+                      child: Icon(
+                        expanded ? Icons.keyboard_double_arrow_up_rounded : Icons.keyboard_double_arrow_down_rounded,
+                        color: Colors.white,
+                        size: 18 * s,
+                      ),
                     ),
                   ),
+
                 ],
               ),
             ),
           ),
-          AnimatedCrossFade(
-            firstChild: const SizedBox.shrink(),
-            secondChild: Container(
-              width: double.infinity,
-              padding: const EdgeInsets.fromLTRB(12, 10, 12, 12),
-              decoration: BoxDecoration(
-                color: const Color(0xFFF7FBFF),
-                borderRadius: const BorderRadius.vertical(bottom: Radius.circular(12)),
-                border: Border(top: BorderSide(color: border)),
+
+          if (expanded) ...[
+            Divider(height: 1, thickness: 1, color: const Color(0xFFBFC9DA)),
+            Padding(
+              padding: EdgeInsets.fromLTRB(12 * s, 10 * s, 12 * s, 12 * s),
+              child: Column(
+                children: [
+                  for (int i = 0; i < lines.length; i++) ...[
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            "${lines[i].k}  :",
+                            style: TextStyle(fontSize: 12 * s, fontWeight: FontWeight.w600, color: const Color(0xFF7A869A)),
+                          ),
+                        ),
+                        Expanded(
+                          child: Text(
+                            lines[i].v,
+                            textAlign: TextAlign.left,
+                            style: TextStyle(fontSize: 12 * s, fontWeight: FontWeight.w900, color: const Color(0xFF0D164A)),
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 6 * s),
+                  ],
+                ],
               ),
-              child: Column(children: children),
             ),
-            crossFadeState: expanded ? CrossFadeState.showSecond : CrossFadeState.showFirst,
-            duration: const Duration(milliseconds: 200),
-          ),
+          ],
         ],
       ),
     );
   }
 }
 
-class _InfoLine extends StatelessWidget {
-  const _InfoLine({
-    required this.index,
-    required this.data,
-    required this.cost,
-  });
+// ============================ Models ============================
 
-  final int index;
+class _DataItem {
+  final String label;
+  final Color dot;
   final String data;
   final String cost;
+  const _DataItem({required this.label, required this.dot, required this.data, required this.cost});
+}
 
-  static const textDark = Color(0xFF0A2A3A);
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 10),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'Data $index  :  $data',
-            style: const TextStyle(
-              color: textDark,
-              fontWeight: FontWeight.w700,
-              fontSize: 12,
-            ),
-          ),
-          const SizedBox(height: 4),
-          Text(
-            'Cost $index  :  $cost',
-            style: const TextStyle(
-              color: textDark,
-              fontWeight: FontWeight.w700,
-              fontSize: 12,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+class _KVLine {
+  final String k;
+  final String v;
+  const _KVLine({required this.k, required this.v});
 }
