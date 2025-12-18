@@ -73,7 +73,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         backgroundColor: Colors.white,
         elevation: 0.5,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new_rounded, color: Color(0xFF1F2A44)),
+          icon: const Icon(Icons.arrow_back_sharp, color: Color(0xFF1F2A44)),
           onPressed: () {
             Navigator.pushAndRemoveUntil(
               context,

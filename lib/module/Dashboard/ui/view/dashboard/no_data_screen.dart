@@ -17,7 +17,7 @@ class NoDataScreen extends StatelessWidget {
         elevation: 0.5,
         leading: IconButton(
           onPressed: () => Navigator.maybePop(context),
-          icon: const Icon(Icons.arrow_back_ios_new, color: Colors.black87, size: 18),
+          icon: const Icon(Icons.arrow_back_sharp, color: Colors.black87, size: 18),
         ),
         title: const Text(
           'SCM',
@@ -38,32 +38,29 @@ class NoDataScreen extends StatelessWidget {
             child: Stack(
               clipBehavior: Clip.none,
               children: [
-                Container(
-                  width: 259,
-                  height: 239,
-                  decoration: BoxDecoration(
-                    color: Colors.white, // change if Figma has another bg
-                    borderRadius: BorderRadius.circular(18),
-                  ),
-                  child: Center(
-                    child: Image.asset(
-                      Assets.appLogo,
-                      width: 120,
-                      height: 120,
-                      fit: BoxFit.contain,
+                SizedBox(
+                  width: 20,
+                  height: 20,
+                  child: InkWell(
+                    borderRadius: BorderRadius.circular(10),
+                    onTap: () {},
+                    child: const Icon(
+                      Icons.notifications_none_rounded,
+                      size: 20, // ✅ 20x20 like Figma
+                      color: Color(0xFF04063E),
                     ),
                   ),
                 ),
 
-                // red dot (notification)
+                // red dot
                 Positioned(
-                  right: 12,
-                  top: 12,
+                  right: -1,
+                  top: -1,
                   child: Container(
-                    width: 9,
-                    height: 9,
+                    width: 6,
+                    height: 6,
                     decoration: const BoxDecoration(
-                      color: Colors.red,
+                      color: Color(0xFFEB5757),
                       shape: BoxShape.circle,
                     ),
                   ),
@@ -71,8 +68,8 @@ class NoDataScreen extends StatelessWidget {
               ],
             ),
           ),
-
         ],
+
       ),
       body: SafeArea(
         child: Center(
