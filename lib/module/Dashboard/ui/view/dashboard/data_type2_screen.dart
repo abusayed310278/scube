@@ -252,11 +252,12 @@ class _HeaderTop extends StatelessWidget {
 
           // SEGMENTED TABS (FULL WIDTH INSIDE SHEET)
           Positioned(
-            left: 16 * s,
-            right: 16 * s,
+            left: 30 * s,
+            right: 30 * s,
             bottom: 20 * s,
             child: Container(
               height: 42 * s,
+              width:30*s,
               padding: EdgeInsets.all(3 * s),
               decoration: BoxDecoration(
                 color: Colors.white,
