@@ -22,36 +22,56 @@ class NoDataScreen extends StatelessWidget {
         title: const Text(
           'SCM',
           style: TextStyle(
-            color: Color(0xFF0A2A3A),
-            fontWeight: FontWeight.w800,
+            fontFamily: 'Inter',
             fontSize: 16,
+            fontWeight: FontWeight.w500, // Medium
+            height: 1.5, // 24/16
+            letterSpacing: 0,
+            color: Color(0xFF04063E),
           ),
         ),
+
         centerTitle: true,
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 12),
             child: Stack(
-              alignment: Alignment.topRight,
+              clipBehavior: Clip.none,
               children: [
-                Image.asset(
+                Container(
+                  width: 259,
+                  height: 239,
+                  decoration: BoxDecoration(
+                    color: Colors.white, // change if Figma has another bg
+                    borderRadius: BorderRadius.circular(18),
+                  ),
+                  child: Center(
+                    child: Image.asset(
                       Assets.appLogo,
                       width: 120,
                       height: 120,
                       fit: BoxFit.contain,
                     ),
+                  ),
+                ),
+
+                // red dot (notification)
                 Positioned(
-                  right: 10,
-                  top: 10,
+                  right: 12,
+                  top: 12,
                   child: Container(
                     width: 9,
                     height: 9,
-                    decoration: const BoxDecoration(color: Colors.red, shape: BoxShape.circle),
+                    decoration: const BoxDecoration(
+                      color: Colors.red,
+                      shape: BoxShape.circle,
+                    ),
                   ),
-                )
+                ),
               ],
             ),
-          )
+          ),
+
         ],
       ),
       body: SafeArea(
