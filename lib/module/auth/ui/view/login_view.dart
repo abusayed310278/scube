@@ -187,17 +187,17 @@ class _LoginScreenState extends State<LoginScreen> {
                             style: TextStyle(
                               fontFamily: 'Inter',
                               fontSize: 12,
-                              fontWeight: FontWeight.w500, // Medium
-                              height: 1.0, // 100%
-                              letterSpacing: 0,
+                              fontWeight: FontWeight.w500,
+                              height: 1.2, // ✅ important (don’t use 1.0)
                               color: Color(0xFF5E5E5E),
                               decoration: TextDecoration.underline,
-                              decorationStyle: TextDecorationStyle.solid,
-                              decorationThickness: 1, // looks closest in Flutter
+                              decorationColor: Color(0xFF5E5E5E), // ✅ force underline color
+                              decorationThickness: 1.2,           // ✅ visible underline
                             ),
                           ),
                         ),
                       ),
+
 
 
                       const SizedBox(height: 8),
