@@ -81,7 +81,7 @@ class _ScmScreenState extends State<ScmScreen> {
           ),
         ),
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new_rounded, color: Color(0xFF1F2A44)),
+          icon: const Icon(Icons.arrow_back_sharp, color: Color(0xFF1F2A44)),
           onPressed: () => Navigator.pop(context),
         ),
         actions: [
@@ -948,11 +948,16 @@ class _RevenuePanelExact extends StatelessWidget {
                         shape: BoxShape.circle,
                         border: Border.all(width: 1, color: const Color(0xFF0096FC)),
                       ),
-                      child: Transform.rotate(
-                        angle: expanded ? 3 * math.pi / 2 : math.pi / 2,
-                        child: Icon(Icons.expand_more, size: 18 * s, color: Colors.white),
+                      child: Icon(
+                        expanded
+                            ? Icons.keyboard_double_arrow_up
+                            : Icons.keyboard_double_arrow_down,
+                        size: 18 * s,
+                        color: Colors.white,
                       ),
+
                     ),
+
                   ],
                 ),
               ),

@@ -69,7 +69,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         elevation: 0,
         centerTitle: true,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new, size: 20, color: _Ui.title),
+          icon: const Icon(Icons.arrow_back_sharp, size: 20, color: _Ui.title),
           onPressed: () {
             Navigator.pushAndRemoveUntil(
               context,
