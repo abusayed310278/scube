@@ -60,7 +60,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
         d2: '58805.63',
         onTap: () {},
       ),
-      // If you add more tiles later, it will scroll safely.
     ];
 
     return Scaffold(
@@ -84,9 +83,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
           style: TextStyle(
             fontFamily: 'Inter',
             fontSize: 16,
-            fontWeight: FontWeight.w500, // Medium
-            height: 1.5, // 24/16
-            letterSpacing: 0,
+            fontWeight: FontWeight.w500,
+            height: 1.5,
             color: _Ui.title,
           ),
         ),
@@ -154,7 +152,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                 fontSize: 16,
                                 fontWeight: FontWeight.w600,
                                 height: 1.0,
-                                letterSpacing: 0,
                                 color: _Ui.electricity,
                               ),
                             ),
@@ -174,23 +171,27 @@ class _DashboardScreenState extends State<DashboardScreen> {
                               selectedIndex: sourceTabIndex,
                               onChanged: (i) => setState(() => sourceTabIndex = i),
                             ),
-                            const SizedBox(height: 10),
 
-                            // ✅ RED AREA (Scrollable) — small right gap, no overflow
+                            // ✅ ADD THIS DIVIDER (requested)
+                            const SizedBox(height: 10),
+                            const _SoftDivider(),
+                            const SizedBox(height: 8),
+
+                            // ✅ RED AREA (Scrollable) + ✅ NO OUTER BORDER (requested)
                             _ListContainer(
                               child: SizedBox(
-                                height: 205, // adjust if you want (190~220)
+                                height: 205,
                                 child: RawScrollbar(
                                   controller: _tilesCtrl,
                                   thumbVisibility: true,
                                   thickness: 4,
                                   radius: const Radius.circular(6),
-                                  crossAxisMargin: 0, // ✅ smallest gap
+                                  crossAxisMargin: 0, // tiny gap
                                   mainAxisMargin: 6,
                                   child: ListView.separated(
                                     controller: _tilesCtrl,
-                                    primary: false, // ✅ important in nested scroll
-                                    padding: const EdgeInsets.only(right: 4), // ✅ tiny space only
+                                    primary: false,
+                                    padding: const EdgeInsets.only(right: 4), // only space for thumb
                                     itemCount: tiles.length,
                                     separatorBuilder: (_, __) => const SizedBox(height: 10),
                                     itemBuilder: (context, i) => _DataTile(model: tiles[i]),
@@ -253,6 +254,9 @@ class _Ui {
   static const red = Color(0xFFE53935);
 
   static const cardBg = Colors.white;
+
+  // List background (inside card)
+  static const listBg = Color(0xFFF7FBFF);
 }
 
 /* -------------------- models -------------------- */
@@ -388,6 +392,21 @@ class _TopTabButton extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+/* -------------------- Divider under Segment (requested) -------------------- */
+
+class _SoftDivider extends StatelessWidget {
+  const _SoftDivider();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 1,
+      width: double.infinity,
+      color: _Ui.borderSoft.withOpacity(0.9),
     );
   }
 }
@@ -531,7 +550,7 @@ class _SegmentButton extends StatelessWidget {
   }
 }
 
-/* -------------------- List Container -------------------- */
+/* -------------------- List Container (NO BORDER) -------------------- */
 
 class _ListContainer extends StatelessWidget {
   const _ListContainer({required this.child});
@@ -540,18 +559,19 @@ class _ListContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      // ✅ removed Border.all(...) so left/right border lines disappear
       decoration: BoxDecoration(
-        color: const Color(0xFFF7FBFF),
+        color: _Ui.listBg,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: _Ui.border, width: 1),
       ),
-      padding: const EdgeInsets.all(10),
+      // keep small padding like figma
+      padding: const EdgeInsets.fromLTRB(8, 8, 8, 8),
       child: child,
     );
   }
 }
 
-/* -------------------- Data Tile (NO OVERFLOW) -------------------- */
+/* -------------------- Data Tile -------------------- */
 
 class _DataTile extends StatelessWidget {
   const _DataTile({required this.model});
@@ -588,8 +608,6 @@ class _DataTile extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 10),
-
-              // ✅ Flexible column so it NEVER overflows
               Expanded(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
@@ -655,7 +673,6 @@ class _DataTile extends StatelessWidget {
                   ],
                 ),
               ),
-
               const SizedBox(width: 8),
               const Icon(Icons.chevron_right, color: _Ui.textGrey),
             ],
@@ -682,9 +699,11 @@ class _BottomGrid extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      // ✅ OUTER BORDER REMOVED
       decoration: BoxDecoration(
+        color: Colors.transparent,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: _Ui.border, width: 1),
+        // border: Border.all(color: _Ui.border, width: 1),  // ❌ removed
       ),
       padding: const EdgeInsets.all(10),
       child: LayoutBuilder(
@@ -707,7 +726,7 @@ class _BottomGrid extends StatelessWidget {
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(10),
-                      border: Border.all(color: _Ui.border, width: 1),
+                      border: Border.all(color: _Ui.border, width: 1), // ✅ keep item border
                     ),
                     padding: const EdgeInsets.symmetric(horizontal: 10),
                     child: Row(
@@ -744,3 +763,4 @@ class _BottomGrid extends StatelessWidget {
     );
   }
 }
+
